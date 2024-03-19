@@ -1,0 +1,312 @@
+.preview-header-title {
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 20px;
+}
+
+.resume-preview-grid-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.resume-preview-grid-item {
+  width: 100%;
+}
+
+.resume-preview-grid-item .resume-save-container {
+  width: 100%;
+}
+
+.resume-preview-grid-item .resume-save-container .resume-save-title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: rgb(99, 93, 93);
+  margin-bottom: 15px;
+}
+.MuiFormControl-root.MuiTextField-root.resume-name-field {
+  width: 50%;
+  margin-bottom: 20px;
+}
+
+.resume-preview-grid-item .resume-save-container .resume-back-next-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.MuiPaper-root.MuiPaper-elevation.work-experience-paper {
+  width: 75%;
+  padding: 40px;
+  margin-right: 0px;
+  height: fit-content;
+}
+
+.work-experience-heading {
+  font-size: 17px;
+  letter-spacing: 0.5px;
+  margin-bottom: 15px;
+}
+
+.add-new-btn-cont {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.experience-cont {
+  width: 100%;
+}
+
+.experience-heading {
+  font-size: 14px;
+}
+
+.experience-form-cont {
+  width: 100%;
+  padding: 20px 0px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 40px;
+  grid-row-gap: 20px;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 1010px) {
+  .MuiPaper-root.MuiPaper-elevation.work-experience-paper {
+    width: 100%;
+    padding: 30px;
+  }
+}
+
+@media screen and (min-width: 1010px) and (max-width: 1300px) {
+  .MuiPaper-root.MuiPaper-elevation.work-experience-paper {
+    width: 90%;
+    padding: 40px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .education-form-cont {
+    grid-template-columns: 1fr;
+  }
+
+  .experience-form-cont {
+    grid-template-columns: 1fr;
+  }
+}
+.education-temp-details {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  margin-left: 13px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.education-temp-university,
+.education-start-end {
+  font-size: 12px;
+  margin-left: 10px;
+  font-weight: 400;
+}
+
+.education-start-end {
+  font-style: italic;
+  margin-left: 4px;
+}
+.experience-heading {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.experience-org-name,
+.experience-start-end {
+  font-size: 12px;
+  margin-left: 10px;
+  font-weight: 400;
+}
+
+.experience-start-end {
+  font-style: italic;
+  margin-left: 4px;
+}
+.header-tem {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 20px 0px;
+  margin-bottom: 10px;
+}
+
+.header-tem-first {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.template-img-cont {
+  width: 90px;
+  border-radius: 50%;
+  background-color: rgb(193, 193, 193);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.template-img-cont .template-profile-img {
+  width: 100%;
+}
+
+.template-img-text {
+  width: 100%;
+  text-align: center;
+  font-size: 35px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.template-user-details-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 25px;
+}
+
+.template-user-name {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 30px;
+  margin-bottom: 5px;
+}
+
+.template-user-designation {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.header-tem-second {
+  width: 20%;
+  text-align: left;
+  font-size: 11px;
+}
+
+.template-user-about {
+  font-size: 12px;
+  padding: 0px 24px;
+}
+
+@media screen and (max-width: 900px) {
+  .template-user-name {
+    font-size: 4vw;
+    font-weight: 600;
+  }
+
+  .template-user-details-cont {
+    margin-left: 15px;
+  }
+
+  .template-img-cont {
+    width: 30%;
+  }
+}
+.professional-experience-heading {
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.vertical-line {
+  width: 100%;
+  border: none;
+  height: 2px;
+  margin-bottom: 8px;
+}
+
+@media screen and (max-width: 500px) {
+  .professional-experience-heading {
+    font-size: 13px;
+  }
+}
+.key-skills-form-fields {
+  width: 100%;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 40px;
+  grid-row-gap: 20px;
+  grid-column-gap: 20px;
+  margin-bottom: 20px;
+}
+
+.key-skills-form-fields .key-input-with-delete {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.key-skills-form-fields .key-input-with-delete .MuiSvgIcon-root:hover {
+  cursor: pointer;
+}
+
+.MuiPaper-root.MuiPaper-elevation.key-skills-paper {
+  width: 75%;
+  padding: 40px;
+  margin-right: 0px;
+  height: fit-content;
+}
+
+.MuiPaper-root.MuiPaper-elevation.key-skills-paper .key-skills-heading {
+  font-size: 17px;
+  letter-spacing: 0.5px;
+  margin-bottom: 15px;
+  font-family: "Poppins", sans-serif;
+}
+
+.MuiButtonBase-root.MuiButton-root.add-new-btn {
+  text-transform: none;
+  margin-bottom: 30px;
+}
+
+.MuiDivider-root.key-skills-divider {
+  border-bottom-width: 2px;
+  margin: 20px 0px;
+}
+
+@media screen and (max-width: 1010px) {
+  .MuiPaper-root.MuiPaper-elevation.key-skills-paper {
+    width: 100%;
+    padding: 20px;
+
+  }
+}
+
+@media screen and (min-width: 1010px) and (max-width: 1300px) {
+  .MuiPaper-root.MuiPaper-elevation.key-skills-paper {
+    width: 90%;
+    padding: 40px;
+
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .key-skills-form-fields {
+    grid-template-columns: 1fr;
+
+  }
+}
+.skill {
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 4px;
+  text-align: left;
+
+}
