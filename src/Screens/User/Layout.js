@@ -48,7 +48,7 @@ const UserLayout = () => {
           </div>
           <div className="nk-sidebar-element nk-sidebar-head">
             <div className="nk-sidebar-brand">
-              <a href="index-2.html" className="logo-link">
+              <a href="/user/dashboard" className="logo-link">
                 <div className="logo-wrap">
                   <img
                     className="logo-img logo-light dashboardlogo"

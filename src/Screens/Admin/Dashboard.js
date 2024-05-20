@@ -24,13 +24,14 @@ const UserDashboard = () => {
                                     <img className="logo-img logo-dark" src="images/logo-dark.png" srcSet="https://copygen.themenio.com/dashboard/images/logo-dark2x.png 2x" alt="" />
                                     <img className="logo-img logo-icon" src="images/logo-icon.png" srcSet="https://copygen.themenio.com/dashboard/images/logo-icon2x.png 2x" alt="" />
                                 </div>
-                            </a>
+                            </a>//docsphere.cyberifyportfolio.com
                         </div>
                         <div className="nk-header-tools">
                             <ul className="nk-quick-nav ms-2">
                                 <li className="dropdown d-inline-flex">
                                     <a data-bs-toggle="dropdown" className="d-inline-flex" href="#">
-                                        <div className="media media-md media-circle media-middle text-bg-primary"><img src="images/avatar/a.png" /></div>
+                                        <div className="media media-md media-circle media-middle text-bg-primary">
+                                        <img src="uploads/default.png" /></div>
                                     </a>
                                     <div className="dropdown-menu dropdown-menu-md rounded-3">
                                         <div className="dropdown-content py-3">

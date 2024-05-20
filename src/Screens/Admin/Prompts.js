@@ -279,6 +279,16 @@ const AdminPrompts = () => {
                           setPrompt({ ...prompt, description: e.target.value })
                         }
                       />
+                       <TextInput
+                        isTextArea={true}
+                        label={"Prompt"}
+                        error={errors.prompt}
+                        value={prompt.prompt}
+                        cols={12}
+                        onChange={(e) =>
+                          setPrompt({ ...prompt, prompt: e.target.value })
+                        }
+                      />
                       <div className="col-md-12">
                         <button
                           className="btn btn-primary"
@@ -310,4 +320,4 @@ const AdminPrompts = () => {
   );
 };
 
-export default AdminPrompts;
+export default AdminPrompts

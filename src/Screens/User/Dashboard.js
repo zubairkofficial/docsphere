@@ -83,7 +83,7 @@ const UserDashboard = () => {
                         >
                           <div className="media-group">
                             <div className="media media-sm media-middle media-circle text-bg-primary">
-                              <img src="images/avatar/a.png" />
+                            <img class="chat-avatar" src="/uploads/default.png" alt=""/>
                             </div>
                             <div className="media-text">
                               <h6 className="fs-6 mb-0">

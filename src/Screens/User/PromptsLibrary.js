@@ -47,7 +47,7 @@ const PromptsLibrary = () => {
       axios
         .post(
           `${Helpers.apiUrl}user/save`,
-          { file: file, prompt_id: promptid, instructions: instructions },
+          { file: file, prompt_id: promptid },
           Helpers.authFileHeaders
         )
         .then((response) => {
@@ -221,14 +221,14 @@ const PromptsLibrary = () => {
                             </div>
                           </div>
                         </div>
-                        <TextInput
+                        {/* <TextInput
                           isTextArea={true}
                           label={"Instructions"}
                           error={errors.instructions}
                           value={prompt.instructions}
                           cols={12}
                           onChange={(e) => setInstructions(e.target.value)}
-                        />
+                        /> */}
                         <div className="col-md-12">
                           <button
                             className="btn btn-primary"
