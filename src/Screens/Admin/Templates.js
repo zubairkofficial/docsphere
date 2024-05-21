@@ -7,7 +7,7 @@ import useTitle from "../../Hooks/useTitle";
 import { Link, useNavigate } from "react-router-dom";
 import SearchHeader from "../../Components/SearchHeader";
 import Pagination from "../../Components/Pagination";
-
+import FileInput from "../../Components/FileInput";
 const AdminTemplates = () => {
   useTitle("Templates");
   const defaultTemplate = {
@@ -17,7 +17,7 @@ const AdminTemplates = () => {
   const navigate = useNavigate();
   const [templates, setTemplates] = useState([]);
   const [orgData, setOrgData] = useState([]);
-
+  const [file,setFile] = useState(null)
   const [categories, setCategories] = useState([]);
   const [template, setTemplate] = useState(defaultTemplate);
 
@@ -149,94 +149,79 @@ const AdminTemplates = () => {
                 <div class="card shadown-none">
                   <div class="card-body">
                     <div class="row g-3 gx-gs">
-                      <table className="table">
-                        <thead>
-                          <tr>
-                            <th>Sr. #</th>
-                            <th>Category</th>
-                            <th>html</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {templates.length === 0 && (
-                            <tr>
-                              <td colSpan={10}>No records found...</td>
-                            </tr>
-                          )}
-                          {templates.length > 0 &&
-                            templates[currentPage].map((temp, index) => {
-                              return (
-                                <tr key={temp.id}>
-                                  <td>{index + 1}</td>
-                                  <td>{temp.category.name}</td>
-                                  <div
-                                    class="fs-4 fw-medium line-clamp-3"
-                                    dangerouslySetInnerHTML={{
-                                      __html: temp.html,
-                                    }}
-                                  />
-                                  {/* <td class="fs-4 fw-medium line-clamp-2">
-                                    {temp.html}
-                                  </td> */}
-                                  <td className="tb-col-end">
-                                    {selectedTemplate === temp.id ? (
-                                      <div>
-                                        <button
-                                          onClick={() =>
-                                            deletetemplate(temp.id)
-                                          }
-                                          disabled={isDeleting}
-                                          className="btn btn-outline-danger btn-sm ml5"
-                                        >
-                                          <em class="icon ni ni-check"></em>
-                                          <span className="ml5">
-                                            {isDeleting
-                                              ? "Deleting..."
-                                              : "Yes, Delete"}
-                                          </span>
-                                        </button>
-                                        <button
-                                          onClick={cancelDelete}
-                                          className="btn btn-outline-primary btn-sm ml5"
-                                        >
-                                          <em className="icon ni ni-cross"></em>
-                                          <span className="ml5">Cancel</span>
-                                        </button>
-                                      </div>
-                                    ) : (
-                                      <div>
-                                        {/* <Link
-                                          to={`/admin/template/questions/${Helpers.encryptString(
-                                            prmpt.id
-                                          )}`}
-                                          className="btn btn-outline-primary btn-sm"
-                                        >
-                                          <em class="icon ni ni-eye"></em>
-                                          <span className="ml5">View</span>
-                                        </Link> */}
-                                        <button
-                                          onClick={() => edittemplate(temp)}
-                                          className="btn btn-outline-primary btn-sm ml5"
-                                        >
-                                          <em class="icon ni ni-edit"></em>
-                                          <span className="ml5">Edit</span>
-                                        </button>
-                                        <button
-                                          onClick={() => initDelete(temp.id)}
-                                          className="btn btn-outline-danger btn-sm ml5"
-                                        >
-                                          <em className="icon ni ni-trash"></em>
-                                          <span className="ml5">Delete</span>
-                                        </button>
-                                      </div>
-                                    )}
-                                  </td>
-                                </tr>
-                              );
-                            })}
-                        </tbody>
-                      </table>
+                    <table className="table">
+  <thead>
+    <tr>
+      <th>Sr. #</th>
+      <th>Category</th>
+      <th>html</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {templates.length === 0 && (
+      <tr>
+        <td colSpan={4}>No records found...</td>
+      </tr>
+    )}
+    {templates.length > 0 &&
+      templates[currentPage].map((temp, index) => {
+        return (
+          <tr key={temp.id}>
+            <td>{index + 1}</td>
+            <td>{temp.category.name}</td>
+            <td>
+              <div
+                className="fs-4 fw-medium line-clamp-3"
+                dangerouslySetInnerHTML={{ __html: temp.html }}
+              />
+            </td>
+            <td className="tb-col-end">
+              {selectedTemplate === temp.id ? (
+                <div>
+                  <button
+                    onClick={() => deletetemplate(temp.id)}
+                    disabled={isDeleting}
+                    className="btn btn-outline-danger btn-sm ml5"
+                  >
+                    <em className="icon ni ni-check"></em>
+                    <span className="ml5">
+                      {isDeleting ? "Deleting..." : "Yes, Delete"}
+                    </span>
+                  </button>
+                  <button
+                    onClick={cancelDelete}
+                    className="btn btn-outline-primary btn-sm ml5"
+                  >
+                    <em className="icon ni ni-cross"></em>
+                    <span className="ml5">Cancel</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="d-flex flex-row">
+                  <button
+                    onClick={() => edittemplate(temp)}
+                    className="btn btn-outline-primary btn-sm flex-grow-1 ml5"
+                  >
+                    <em className="icon ni ni-edit"></em>
+                    <span className="ml5">Edit</span>
+                  </button>
+                  <button
+                    onClick={() => initDelete(temp.id)}
+                    className="btn btn-outline-danger btn-sm flex-grow-1 ml5"
+                  >
+                    <em className="icon ni ni-trash"></em>
+                    <span className="ml5">Delete</span>
+                  </button>
+                </div>
+              )}
+            </td>
+          </tr>
+        );
+      })}
+  </tbody>
+                    </table>
+
                       {templates.length > 0 && (
                         <Pagination
                           currentPage={currentPage}
@@ -293,6 +278,27 @@ const AdminTemplates = () => {
                           })
                         }
                       />
+                        <FileInput
+                         label={"Docx File"}
+                        error={errors.html} 
+                        className="form-control"
+                        onChange={(e) =>  setTemplate({
+                            ...template,
+                            html: e.target.value,
+                            docxFile:e.target.files[0]})}>
+                          
+                        </FileInput>
+                      {/* <input
+                        type="file"
+                        className="form-control"
+                        onChange={(e) =>  setTemplate({
+                            ...template,
+                            html: e.target.value,
+                            docxFile:e.target.files[0],
+                          })}
+                      /> */}
+                           
+                  
                       <div className="col-md-12">
                         <button
                           className="btn btn-primary"

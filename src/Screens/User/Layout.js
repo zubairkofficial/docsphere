@@ -18,7 +18,23 @@ const UserLayout = () => {
     Helpers.toggleCSS();
     setShowMobileNav(false);
   }, [location.pathname]);
-
+  const sidebarMenu = [
+    {
+      path: "/user/dashboard",
+      icon: "ni ni-dashboard-fill",
+      text: "Dashboard"
+    },
+    {
+      path: "/user/prompts-library",
+      icon: "ni ni-layers",
+      text: "Prompts Library"
+    },
+    {
+      path: "/user/chat-history",
+      icon: "ni ni-clock",
+      text: "History"
+    }
+  ];
   return (
     <div className="nk-app-root" data-sidebar-collapse="lg">
       <div class="nk-main">
@@ -73,46 +89,39 @@ const UserLayout = () => {
             <div className="nk-sidebar-content h-100" data-simplebar>
               <div className="nk-sidebar-menu">
                 <ul className="nk-menu">
-                  <li className="nk-menu-item">
-                    <Link to="/user/dashboard" className="nk-menu-link">
-                      <span className="nk-menu-icon">
-                        <em className="icon ni ni-dashboard-fill"></em>
-                      </span>
-                      <span className="nk-menu-text">Dashboard</span>
-                    </Link>
-                  </li>
-                  <li class="nk-menu-item">
-                    <Link to="/user/prompts-library" class="nk-menu-link">
-                      <span class="nk-menu-icon">
-                        <em class="icon ni ni-layers"></em>
-                      </span>
-                      <span class="nk-menu-text">Prompts Library</span>
-                    </Link>
-                  </li>
-                  {/* <li class="nk-menu-item">
-                    <Link to="/user/templates-library" class="nk-menu-link">
-                      <span class="nk-menu-icon">
-                        <em class="icon ni ni-layers"></em>
-                      </span>
-                      <span class="nk-menu-text">Templates Library</span>
-                    </Link>
-                  </li> */}
-                  <li class="nk-menu-item">
-                    <Link to="/user/chat-history" class="nk-menu-link">
-                      <span class="nk-menu-icon">
-                        <em class="icon ni ni-clock"></em>
-                      </span>
-                      <span class="nk-menu-text">History</span>
-                    </Link>
-                  </li>
-                  {/* <li className="nk-menu-item">
-                    <Link to="/user/chatbot" className="nk-menu-link">
-                      <span className="nk-menu-icon">
-                        <em className="icon ni ni-chat"></em>
-                      </span>
-                      <span className="nk-menu-text">Chatbot</span>
-                    </Link>
-                  </li> */}
+               
+
+
+
+                {sidebarMenu.map((item, index) => (
+        <li key={index} className="nk-menu-item">
+          <Link
+            to={item.path}
+            className={`nk-menu-link ${location.pathname === item.path ? 'active' : ''}`}
+          >
+            <span className="nk-menu-icon">
+              <em className={`icon ${item.icon}`}></em>
+            </span>
+            <span className="nk-menu-text">{item.text}</span>
+          </Link>
+        </li>
+        ))}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                   <li className="nk-menu-item">
                     <a href="#!" onClick={logout} className="nk-menu-link">
                       <span className="nk-menu-icon">
@@ -175,7 +184,8 @@ const UserLayout = () => {
                                             <li className="nk-menu-item">
                                                 <a href="component-form-basic.html" className="nk-menu-link"><span className="nk-menu-text">Form Basic</span></a>
                                             </li>
-                                            <li className="nk-menu-item">
+                                           <div class="nk-sidebar-toggle me-1">
+                   <li className="nk-menu-item">
                                                 <a href="component-form-advanced.html" className="nk-menu-link"><span className="nk-menu-text">Form Advanced</span></a>
                                             </li>
                                         </ul>
@@ -272,7 +282,7 @@ const UserLayout = () => {
                       <em class="icon ni ni-menu"> </em>
                     </button>
                   </div>
-                  <a href="index-2.html" class="logo-link">
+                  {/* <a href="index-2.html" class="logo-link">
                     <div class="logo-wrap">
                       <img
                         class="logo-img logo-light"
@@ -293,7 +303,7 @@ const UserLayout = () => {
                         alt=""
                       />
                     </div>
-                  </a>
+                  </a> */}
                 </div>
                 <div class="nk-header-tools">
                   <ul class="nk-quick-nav ms-2">

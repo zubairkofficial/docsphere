@@ -1,23 +1,65 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link,NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Helpers from "../../Config/Helpers";
+import PageLoader from "../../Components/Loader/PageLoader";
 
 const UserLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [showMobileNav, setShowMobileNav] = useState(false);
+  const [loader,setLoader] = useState(false)
   const [isCompact, setIsCompact] = useState(false);
   const logout = (e) => {
+    console.log('in logout')
+    setLoader(true)
     e.preventDefault();
     Helpers.toast("success", "Logged out successfully");
     localStorage.clear();
     navigate("/");
+    setTimeout(()=>{
+      setLoader(false)
+
+    },500)
+
   };
   useEffect(() => {
     Helpers.toggleCSS();
   }, [location.pathname]);
-
+  
+  const sidebarMenu = [
+    {
+      path: '/admin/dashboard',
+      icon: 'ni ni-dashboard-fill',
+      text: 'Dashboard',
+    },
+    {
+      path: '/admin/users',
+      icon: 'ni ni-users',
+      text: 'Users',
+    },
+    {
+      path: '/admin/categories',
+      icon: 'ni ni-folder-list',
+      text: 'Categories',
+    },
+    {
+      path: '/admin/prompts',
+      icon: 'ni ni-folder-list',
+      text: 'Prompts',
+    },
+    {
+      path: '/admin/templates',
+      icon: 'ni ni-folder-list',
+      text: 'Templates',
+    },
+  ];
   return (
+   <>
+{
+  loader ? (
+    <PageLoader/>
+  ):(
+
     <div className="nk-app-root" data-sidebar-collapse="lg">
       <div class="nk-main">
         {showMobileNav && (
@@ -71,46 +113,19 @@ const UserLayout = () => {
             <div className="nk-sidebar-content h-100" data-simplebar>
               <div className="nk-sidebar-menu">
                 <ul className="nk-menu">
-                  <li className="nk-menu-item">
-                    <Link to="/admin/dashboard" className="nk-menu-link">
-                      <span className="nk-menu-icon">
-                        <em className="icon ni ni-dashboard-fill"></em>
-                      </span>
-                      <span className="nk-menu-text">Dashboard</span>
-                    </Link>
-                  </li>
-                  <li class="nk-menu-item">
-                    <Link to={"/admin/users"} class="nk-menu-link">
-                      <span class="nk-menu-icon">
-                        <em class="icon ni ni-users"></em>
-                      </span>
-                      <span class="nk-menu-text">Users</span>
-                    </Link>
-                  </li>
-                  <li class="nk-menu-item">
-                    <Link to={"/admin/categories"} class="nk-menu-link">
-                      <span className="nk-menu-icon">
-                        <em className="icon ni ni-folder-list"></em>
-                      </span>
-                      <span className="nk-menu-text">Categories</span>
-                    </Link>
-                  </li>
-                  <li class="nk-menu-item">
-                    <Link to={"/admin/prompts"} class="nk-menu-link">
-                      <span className="nk-menu-icon">
-                        <em className="icon ni ni-folder-list"></em>
-                      </span>
-                      <span className="nk-menu-text">Prompts</span>
-                    </Link>
-                  </li>
-                  <li class="nk-menu-item">
-                    <Link to={"/admin/templates"} class="nk-menu-link">
-                      <span className="nk-menu-icon">
-                        <em className="icon ni ni-folder-list"></em>
-                      </span>
-                      <span className="nk-menu-text">Templates</span>
-                    </Link>
-                  </li>
+                {sidebarMenu.map((item, index) => (
+        <li key={index} className="nk-menu-item">
+          <Link
+            to={item.path}
+            className={`nk-menu-link ${location.pathname === item.path ? 'active' : ''}`}
+          >
+            <span className="nk-menu-icon">
+              <em className={`icon ${item.icon}`}></em>
+            </span>
+            <span className="nk-menu-text">{item.text}</span>
+          </Link>
+        </li>
+      ))}
                   {/* <li className="nk-menu-item has-sub">
                     <a href="#" className="nk-menu-link nk-menu-toggle">
                       <span className="nk-menu-icon">
@@ -519,6 +534,11 @@ const UserLayout = () => {
         </div>
       </div>
     </div>
-  );
+
+  )
+}
+
+   </>
+      );
 };
 export default UserLayout;

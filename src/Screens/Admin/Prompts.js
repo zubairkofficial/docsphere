@@ -14,6 +14,7 @@ const AdminPrompts = () => {
     category: "",
     name: "",
     description: "",
+    prompt:""
   };
   const navigate = useNavigate();
   const [prompts, setPrompts] = useState([]);
@@ -62,6 +63,7 @@ const AdminPrompts = () => {
       .get(`${Helpers.apiUrl}prompt/all-prompts`, Helpers.authHeaders)
       .then((response) => {
         let paginatedData = Helpers.paginate(response.data);
+        console.log("prompt data",response.data)
         setPrompts(paginatedData);
         setOrgData(response.data);
       });
@@ -74,7 +76,9 @@ const AdminPrompts = () => {
       category: prmpt.category_id,
       description: prmpt.description,
       id: prmpt.id,
+      prompt:prmpt.prompt,
     };
+    console.log("errors values",errors)
     setPrompt(editPrompt);
     setShowAddPrompt(true);
     setIsEditing(true);

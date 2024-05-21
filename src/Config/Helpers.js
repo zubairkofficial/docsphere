@@ -7,7 +7,7 @@ class Helpers {
   static server = "docsphere.cyberifyportfolio.com";
   static basePath = `//${this.server}`;
   static apiUrl = `${this.basePath}/api/`;
-
+ static googleUrl = `${this.basePath}/`; 
   static authUser = JSON.parse(localStorage.getItem("user")) ?? {};
 
   static serverImage = (name) => {
@@ -60,30 +60,45 @@ class Helpers {
   static toggleCSS() {
     const path = window.location.pathname;
 
-    // Assuming you have class names 'main-theme' and 'dashboard-theme' for your CSS links
     const mainCSS = document.getElementsByClassName("main-theme");
     const dashboardCSS = document.getElementsByClassName("dashboard-theme");
 
+    // Preload stylesheets to avoid FOUC
+    const preloadStyles = (styles) => {
+        styles.forEach(style => {
+            const link = document.createElement("link");
+            link.rel = "preload";
+            link.href = style.href;
+            link.as = "style";
+            document.head.appendChild(link);
+        });
+    };
+
     if (path.includes("/user") || path.includes("/admin")) {
-      // Disable all main theme stylesheets
-      for (let i = 0; i < mainCSS.length; i++) {
-        mainCSS[i].setAttribute("disabled", "true");
-      }
-      // Enable all dashboard theme stylesheets
-      for (let i = 0; i < dashboardCSS.length; i++) {
-        dashboardCSS[i].removeAttribute("disabled");
-      }
+        preloadStyles(Array.from(dashboardCSS));
+        // Disable main theme and enable dashboard theme
+        setTimeout(() => {
+            for (let i = 0; i < mainCSS.length; i++) {
+                mainCSS[i].setAttribute("disabled", "true");
+            }
+            for (let i = 0; i < dashboardCSS.length; i++) {
+                dashboardCSS[i].removeAttribute("disabled");
+            }
+        }, 0);
     } else {
-      // Enable all main theme stylesheets
-      for (let i = 0; i < mainCSS.length; i++) {
-        mainCSS[i].removeAttribute("disabled");
-      }
-      // Disable all dashboard theme stylesheets
-      for (let i = 0; i < dashboardCSS.length; i++) {
-        dashboardCSS[i].setAttribute("disabled", "true");
-      }
+        preloadStyles(Array.from(mainCSS));
+        // Enable main theme and disable dashboard theme
+        setTimeout(() => {
+            for (let i = 0; i < mainCSS.length; i++) {
+                mainCSS[i].removeAttribute("disabled");
+            }
+            for (let i = 0; i < dashboardCSS.length; i++) {
+                dashboardCSS[i].setAttribute("disabled", "true");
+            }
+        }, 0);
     }
-  }
+}
+
 
   static loadScript(scriptName, dashboard = false) {
     return new Promise((resolve, reject) => {

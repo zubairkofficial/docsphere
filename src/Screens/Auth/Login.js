@@ -3,13 +3,14 @@ import useTitle from "../../Hooks/useTitle";
 import { useState } from "react";
 import axios from "axios";
 import Helpers from "../../Config/Helpers";
+import GoogleLoginButton from "../../Components/GoogleLoginButton";
 
 const Login = () => {
   useTitle("Login");
 
   const defaultUser = {
-    email: "",
-    password: "",
+    email: "admin@docsphere.ai",
+    password: "12345678",
   };
 
   const [user, setUser] = useState(defaultUser);
@@ -61,7 +62,7 @@ const Login = () => {
           <form onSubmit={handleLogin} class="register-one__form">
             <div class="row">
               <div class="col-md-12">
-                <div class="register-one__form__email">
+                <div class="register-one_form_email">
                   <input
                     type="email"
                     value={user.email}
@@ -77,7 +78,7 @@ const Login = () => {
                 </div>
               </div>
               <div class="col-md-12">
-                <div class="register-one__form__password">
+                <div class="register-one_form_password">
                   <input
                     type="password"
                     value={user.password}
@@ -93,6 +94,7 @@ const Login = () => {
                   </small>
                 </div>
               </div>
+
               <div class="col-md-12">
                 <Link to={"/forgot-password"} className="c-primary">
                   Forgot Password?
@@ -110,6 +112,9 @@ const Login = () => {
               </div>
             </div>
           </form>
+          <div class="col-md-12">
+              <GoogleLoginButton/>
+              </div>
           <p class="register-one__tagline">
             Don’t have an account?{" "}
             <Link to="/register" className="c-primary">

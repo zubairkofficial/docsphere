@@ -6,18 +6,21 @@ import { Link } from "react-router-dom";
 
 const UserDashboard = () => {
   useTitle("Dashboard");
+  const [showMobileNav, setShowMobileNav] = useState(false);
 
   return (
     <div className="nk-wrap">
-      <div className="nk-header nk-header-fixed">
+      {/* <div className="nk-header nk-header-fixed">
         <div className="container-fluid">
           <div className="nk-header-wrap">
             <div className="nk-header-logo ms-n1">
-              <div className="nk-sidebar-toggle me-1">
-                <button className="btn btn-sm btn-zoom btn-icon sidebar-toggle d-sm-none">
+              <div className="nk-sidebar-toggle me-1 sidebar-active">
+                <button className="btn btn-sm btn-zoom btn-icon sidebar-toggle d-sm-none" onClick={() => setShowMobileNav(true)}
+>
                   <em className="icon ni ni-menu"> </em>
                 </button>
-                <button className="btn btn-md btn-zoom btn-icon sidebar-toggle d-none d-sm-inline-flex">
+                <button className="btn btn-md btn-zoom btn-icon sidebar-toggle d-none d-sm-inline-flex" onClick={() => setShowMobileNav(true)}
+ >
                   <em className="icon ni ni-menu"> </em>
                 </button>
               </div>
@@ -53,7 +56,7 @@ const UserDashboard = () => {
                     href="#"
                   >
                     <div className="media media-md media-circle media-middle text-bg-primary">
-                      <img src="images/avatar/a.png" />
+                    <img class="chat-avatars" src="//docsphere.cyberifyportfolio.com/uploads/default.png" alt=""/>
                     </div>
                   </a>
                   <div className="dropdown-menu dropdown-menu-md rounded-3">
@@ -104,7 +107,7 @@ const UserDashboard = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="nk-content">
         <div className="container-xl">
           <div className="nk-content-inner">

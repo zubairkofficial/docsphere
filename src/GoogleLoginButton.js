@@ -13,9 +13,9 @@ const GoogleLoginButton = () => {
   };
 
   return (
-    <a className="btn btn-danger btn-block" href={`${Helpers.googleUrl}login/google`}>
+    <button className="btn btn-danger btn-block" onClick={handleLogin}>
       <i className="fab fa-google"></i> Sign in with Google
-    </a>
+    </button>
   );
 };
 

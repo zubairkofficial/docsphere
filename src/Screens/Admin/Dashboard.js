@@ -322,7 +322,7 @@ const UserDashboard = () => {
                     </div>
                 </div>
             </div>
-            <div className="nk-footer">
+            {/* <div className="nk-footer">
                 <div className="container-xl">
                     <div className="d-flex align-items-center flex-wrap justify-content-between mx-n3">
                         <div className="nk-footer-links px-3">
@@ -337,7 +337,7 @@ const UserDashboard = () => {
                         <div className="nk-footer-copyright fs-6 px-3">&copy; 2023 All Rights Reserved to <a href="/">docsphere.ai</a>.</div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }

@@ -1,12 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Helpers from "../Config/Helpers";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 const Layout = () => {
 	const location = useLocation();
-    
+    const [loader,setLoader] = useState(false)
+    useEffect(() => {
+        Helpers.toggleCSS();
+    }, [location.pathname]);
 	useEffect(() => {
-
+        setLoader(true)
         Helpers.loadScript("jquery.js")
             .then(() => Helpers.loadScript("01-bootstrap.min.js"))
             .then(() => Helpers.loadScript("02-bootstrap-select.min.js"))
@@ -29,14 +32,15 @@ const Layout = () => {
             .then(() => Helpers.loadScript("19-jquery.lettering.min.js"))
             .then(() => Helpers.loadScript("script.js")) // Load script.js last
             .catch(error => console.error("Script loading failed: ", error));
+            setLoader(false)
+
     }, []);
 
-    useEffect(() => {
-        Helpers.toggleCSS();
-    }, [location.pathname]);
+   
 
     return (
-        <div class="page-wrapper">
+       <>
+        {loader ? (<div>loading....</div>):( <div class="page-wrapper">
             <div class="cursor"></div>
             <div class="cursor-follower"></div>
             <header class="main-header main-header-one">
@@ -234,7 +238,8 @@ const Layout = () => {
                     </div>
                 </div>
             </footer>
-        </div>
+        </div>)}
+       </>
     )
 }
 
