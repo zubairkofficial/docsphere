@@ -1,25 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link,NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Helpers from "../../Config/Helpers";
-import PageLoader from "../../Components/Loader/PageLoader";
 
 const UserLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [showMobileNav, setShowMobileNav] = useState(false);
-  const [loader,setLoader] = useState(false)
   const [isCompact, setIsCompact] = useState(false);
   const logout = (e) => {
     console.log('in logout')
-    setLoader(true)
     e.preventDefault();
     Helpers.toast("success", "Logged out successfully");
     localStorage.clear();
     navigate("/");
-    setTimeout(()=>{
-      setLoader(false)
-
-    },500)
+   
 
   };
   useEffect(() => {
@@ -55,10 +49,7 @@ const UserLayout = () => {
   ];
   return (
    <>
-{
-  loader ? (
-    <PageLoader/>
-  ):(
+
 
     <div className="nk-app-root" data-sidebar-collapse="lg">
       <div class="nk-main">
@@ -535,8 +526,8 @@ const UserLayout = () => {
       </div>
     </div>
 
-  )
-}
+  
+
 
    </>
       );
