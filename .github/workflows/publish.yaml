@@ -16,7 +16,7 @@ jobs:
       - name: Install all dependencies
         run: npm install
 
-      - name: Build
+      - name: master
         run: CI=false npm run build # The build command of your project
 
       - name: Push
