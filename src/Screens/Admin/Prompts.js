@@ -208,20 +208,22 @@ const AdminPrompts = () => {
                                           <em class="icon ni ni-eye"></em>
                                           <span className="ml5">View</span>
                                         </Link> */}
-                                        <button
-                                          onClick={() => editPrompt(prmpt)}
-                                          className="btn btn-outline-primary btn-sm ml5"
-                                        >
-                                          <em class="icon ni ni-edit"></em>
-                                          <span className="ml5">Edit</span>
-                                        </button>
-                                        <button
-                                          onClick={() => initDelete(prmpt.id)}
-                                          className="btn btn-outline-danger btn-sm ml5"
-                                        >
-                                          <em className="icon ni ni-trash"></em>
-                                          <span className="ml5">Delete</span>
-                                        </button>
+                                        <div className="d-flex flex-row">
+                  <button
+                    onClick={() => editPrompt(prmpt)}
+                    className="btn btn-outline-primary btn-sm flex-grow-1 ml5"
+                  >
+                    <em className="icon ni ni-edit"></em>
+                    <span className="ml5">Edit</span>
+                  </button>
+                  <button
+                    onClick={() => initDelete(prmpt.id)}
+                    className="btn btn-outline-danger btn-sm flex-grow-1 ml5"
+                  >
+                    <em className="icon ni ni-trash"></em>
+                    <span className="ml5">Delete</span>
+                  </button>
+                </div>
                                       </div>
                                     )}
                                   </td>

@@ -230,7 +230,12 @@ const UserLayout = () => {
                       </li>
                       <li className="nk-menu-item">
                         <a
-                          href="verify-email.html"
+                          href="verify-email.html"Page 1 Showing 1 - 3 of 3 Items
+￼
+￼
+1
+￼
+
                           target="_blank"
                           className="nk-menu-link"
                         >
@@ -248,7 +253,12 @@ const UserLayout = () => {
                       </li>
                     </ul>
                   </li>
-                  <li className="nk-menu-heading">
+                  <li className="nk-menu-heading">Page 1 Showing 1 - 3 of 3 Items
+￼
+￼
+1
+￼
+
                     <h6 className="overline-title">Components</h6>
                   </li>
                   <li className="nk-menu-item">
@@ -270,7 +280,12 @@ const UserLayout = () => {
                   <li className="nk-menu-item">
                     <a href="component-alert.html" className="nk-menu-link">
                       <span className="nk-menu-icon is-alt">
-                        <em className="icon ni ni-alert"></em>
+                        <em className="icon ni ni-alert"></em>Page 1 Showing 1 - 3 of 3 Items
+￼
+￼
+1
+￼
+
                       </span>
                       <span className="nk-menu-text">Alert</span>
                     </a>
@@ -307,7 +322,12 @@ const UserLayout = () => {
                           <span className="nk-menu-text">Form Advanced</span>
                         </a>
                       </li>
-                    </ul>
+                    </ul>Page 1 Showing 1 - 3 of 3 Items
+￼
+￼
+1
+￼
+
                   </li>
                   <li className="nk-menu-item">
                     <a href="component-tabs.html" className="nk-menu-link">

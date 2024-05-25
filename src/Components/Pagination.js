@@ -3,7 +3,7 @@ const Pagination = ({ currentPage, setCurrentPage, data, orgData }) => {
     return (
         <div className="row">
             <div className="col-md-6">
-                <span>Page <span className="badge bg-primary">{ currentPage + 1 }</span> Showing { currentPage * 10 + 1 } - { Math.min((currentPage + 1) * 10, orgData.length) } of { orgData.length } Items</span>
+                <span>Page <span className="badge ">{ currentPage + 1 }</span> Showing { currentPage * 10 + 1 } - { Math.min((currentPage + 1) * 10, orgData.length) } of { orgData.length } Items</span>
             </div>
             <div className="col-md-6 text-right pr0">
                 {/* <button onClick={() => setCurrentPage(0)} className="btn btn-outline-primary btn-sm">

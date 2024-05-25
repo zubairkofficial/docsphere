@@ -56,6 +56,8 @@ class Helpers {
     });
   };
   static chatApiKey = "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";
+  static sbUrl = 'https://viekdgdthevphwbclorz.supabase.co';
+  static sbApiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpZWtkZ2R0aGV2cGh3YmNsb3J6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxNjM3MTc4NiwiZXhwIjoyMDMxOTQ3Nzg2fQ.9Yv-S6qUjfPj3Y-4TiuguYHC_EPH7AOoAIdSzec97bQ';
 
   static toggleCSS() {
     const path = window.location.pathname;

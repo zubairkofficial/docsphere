@@ -76,7 +76,7 @@ const AdminUsers = () => {
                         <thead>
                           <tr>
                             <th>Sr. #</th>
-                            <th>Name</th>
+                            <th>Name</th>bg-primary
                             <th>Email</th>
                             <th>Joined On</th>
                             <th></th>
@@ -125,16 +125,17 @@ const AdminUsers = () => {
                                       </button>
                                     </div>
                                   ) : (
-                                    <div>
+                                    <div  style={{ width: 'auto' }}>
                                       {/* <button className="btn btn-outline-danger btn-sm ml10" onClick={() => initiateDelete(user.id)}>
                                                                             <em class="icon ni ni-trash"></em><span className="ml5">Delete</span>
                                                                         </button> */}
                                       <Link
                                         to={`/admin/chats/user/${user.id}`}
-                                        className="btn btn-outline-primary btn-sm ml10"
+                                        className="btn btn-outline-primary btn-sm ml10 "
+                                       
                                       >
                                         <em class="icon ni ni-eye"></em>
-                                        <span className="ml5">View Chats</span>
+                                        <span className="ml5 text-nowrap">View Chats</span>
                                       </Link>
                                     </div>
                                   )}
