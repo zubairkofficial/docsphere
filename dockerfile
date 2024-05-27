@@ -9,7 +9,7 @@ WORKDIR /app
 
 # Installing dependencies
 COPY ./package.json ./package-lock.json ./
-RUN npm ci
+RUN sudo npm ci
 
 
 # Copying all the files in our project
