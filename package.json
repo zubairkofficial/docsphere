@@ -7,6 +7,9 @@
     "@emotion/styled": "^11.11.0",
     "@langchain/community": "^0.2.1",
     "@langchain/openai": "^0.0.33",
+    "@fortawesome/fontawesome-free": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.1",
     "@mui/material": "^5.15.6",
     "@supabase/supabase-js": "^2.43.2",
     "@testing-library/jest-dom": "^5.17.0",
@@ -35,7 +38,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "preview": "serve -s build"
   },
   "eslintConfig": {
     "extends": [
@@ -54,5 +58,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

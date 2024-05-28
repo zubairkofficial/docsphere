@@ -2,9 +2,10 @@ import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
 class Helpers {
+  
   static localhost = "127.0.0.1:8000";
-  static server = "apidocsphere.cyberify.co";
-  static basePath = `//${this.localhost}`;
+  static server = "docsphere.cyberifyportfolio.com";
+  static basePath = `//${this.server}`;
   static apiUrl = `${this.basePath}/api/`;
   static googleUrl = `${this.basePath}/`;
 
@@ -56,34 +57,51 @@ class Helpers {
     });
   };
   static chatApiKey = "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";
+  static sbUrl = 'https://viekdgdthevphwbclorz.supabase.co';
+  static sbApiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpZWtkZ2R0aGV2cGh3YmNsb3J6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxNjM3MTc4NiwiZXhwIjoyMDMxOTQ3Nzg2fQ.9Yv-S6qUjfPj3Y-4TiuguYHC_EPH7AOoAIdSzec97bQ';
 
   static toggleCSS() {
     const path = window.location.pathname;
 
-    // Assuming you have class names 'main-theme' and 'dashboard-theme' for your CSS links
     const mainCSS = document.getElementsByClassName("main-theme");
     const dashboardCSS = document.getElementsByClassName("dashboard-theme");
 
+    // Preload stylesheets to avoid FOUC
+    const preloadStyles = (styles) => {
+        styles.forEach(style => {
+            const link = document.createElement("link");
+            link.rel = "preload";
+            link.href = style.href;
+            link.as = "style";
+            document.head.appendChild(link);
+        });
+    };
+
     if (path.includes("/user") || path.includes("/admin")) {
-      // Disable all main theme stylesheets
-      for (let i = 0; i < mainCSS.length; i++) {
-        mainCSS[i].setAttribute("disabled", "true");
-      }
-      // Enable all dashboard theme stylesheets
-      for (let i = 0; i < dashboardCSS.length; i++) {
-        dashboardCSS[i].removeAttribute("disabled");
-      }
+        preloadStyles(Array.from(dashboardCSS));
+        // Disable main theme and enable dashboard theme
+        setTimeout(() => {
+            for (let i = 0; i < mainCSS.length; i++) {
+                mainCSS[i].setAttribute("disabled", "true");
+            }
+            for (let i = 0; i < dashboardCSS.length; i++) {
+                dashboardCSS[i].removeAttribute("disabled");
+            }
+        }, 0);
     } else {
-      // Enable all main theme stylesheets
-      for (let i = 0; i < mainCSS.length; i++) {
-        mainCSS[i].removeAttribute("disabled");
-      }
-      // Disable all dashboard theme stylesheets
-      for (let i = 0; i < dashboardCSS.length; i++) {
-        dashboardCSS[i].setAttribute("disabled", "true");
-      }
+        preloadStyles(Array.from(mainCSS));
+        // Enable main theme and disable dashboard theme
+        setTimeout(() => {
+            for (let i = 0; i < mainCSS.length; i++) {
+                mainCSS[i].removeAttribute("disabled");
+            }
+            for (let i = 0; i < dashboardCSS.length; i++) {
+                dashboardCSS[i].setAttribute("disabled", "true");
+            }
+        }, 0);
     }
-  }
+}
+
 
   static loadScript(scriptName, dashboard = false) {
     return new Promise((resolve, reject) => {

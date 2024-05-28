@@ -7,10 +7,11 @@ import GoogleLoginButton from "../../Components/GoogleLoginButton";
 
 const Login = () => {
   useTitle("Login");
+  const [showPassword, setShowPassword] = useState(false);
 
   const defaultUser = {
-    email: "",
-    password: "",
+    email: "admin@docsphere.ai",
+    password: "12345678",
   };
 
   const [user, setUser] = useState(defaultUser);
@@ -41,6 +42,27 @@ const Login = () => {
         setIsLoading(false);
       });
   };
+
+
+
+
+
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <section class="login-page full-height">
       <div
@@ -62,7 +84,7 @@ const Login = () => {
           <form onSubmit={handleLogin} class="register-one__form">
             <div class="row">
               <div class="col-md-12">
-                <div class="register-one__form__email">
+                <div class="register-one_form_email">
                   <input
                     type="email"
                     value={user.email}
@@ -77,24 +99,30 @@ const Login = () => {
                   </small>
                 </div>
               </div>
-              <div class="col-md-12">
-                <div class="register-one__form__password">
-                  <input
-                    type="password"
-                    value={user.password}
-                    onChange={(e) =>
-                      setUser({ ...user, password: e.target.value })
-                    }
-                    class="form-control form-control-lg"
-                    placeholder="Enter Password"
-                    required
-                  />
-                  <small className="text-danger">
-                    {errors.password ? errors.password[0] : ""}
-                  </small>
-                </div>
-              </div>
-
+              <div className="col-md-12">
+      <div className="register-one_form_password position-relative">
+        <input
+          type={showPassword ? "text" : "password"}
+          value={user.password}
+          onChange={(e) =>
+            setUser({ ...user, password: e.target.value })
+          }
+          className="form-control form-control-lg"
+          placeholder="Enter Password"
+          required
+        />
+        <span
+          onClick={togglePasswordVisibility}
+          className="position-absolute"
+          style={{ top: '50%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer' }}
+        >
+          <i className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></i>
+        </span>
+        <small className="text-danger">
+          {errors.password ? errors.password[0] : ""}
+        </small>
+      </div>
+    </div>
               <div class="col-md-12">
                 <Link to={"/forgot-password"} className="c-primary">
                   Forgot Password?
@@ -113,8 +141,8 @@ const Login = () => {
             </div>
           </form>
           <div class="col-md-12">
-              <GoogleLoginButton/>
-              </div>
+            <GoogleLoginButton />
+          </div>
           <p class="register-one__tagline">
             Don’t have an account?{" "}
             <Link to="/register" className="c-primary">

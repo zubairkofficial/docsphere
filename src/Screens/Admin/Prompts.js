@@ -14,6 +14,7 @@ const AdminPrompts = () => {
     category: "",
     name: "",
     description: "",
+    prompt:""
   };
   const navigate = useNavigate();
   const [prompts, setPrompts] = useState([]);
@@ -62,6 +63,7 @@ const AdminPrompts = () => {
       .get(`${Helpers.apiUrl}prompt/all-prompts`, Helpers.authHeaders)
       .then((response) => {
         let paginatedData = Helpers.paginate(response.data);
+        console.log("prompt data",response.data)
         setPrompts(paginatedData);
         setOrgData(response.data);
       });
@@ -74,7 +76,9 @@ const AdminPrompts = () => {
       category: prmpt.category_id,
       description: prmpt.description,
       id: prmpt.id,
+      prompt:prmpt.prompt,
     };
+    console.log("errors values",errors)
     setPrompt(editPrompt);
     setShowAddPrompt(true);
     setIsEditing(true);
@@ -204,20 +208,22 @@ const AdminPrompts = () => {
                                           <em class="icon ni ni-eye"></em>
                                           <span className="ml5">View</span>
                                         </Link> */}
-                                        <button
-                                          onClick={() => editPrompt(prmpt)}
-                                          className="btn btn-outline-primary btn-sm ml5"
-                                        >
-                                          <em class="icon ni ni-edit"></em>
-                                          <span className="ml5">Edit</span>
-                                        </button>
-                                        <button
-                                          onClick={() => initDelete(prmpt.id)}
-                                          className="btn btn-outline-danger btn-sm ml5"
-                                        >
-                                          <em className="icon ni ni-trash"></em>
-                                          <span className="ml5">Delete</span>
-                                        </button>
+                                        <div className="d-flex flex-row">
+                  <button
+                    onClick={() => editPrompt(prmpt)}
+                    className="btn btn-outline-primary btn-sm flex-grow-1 ml5"
+                  >
+                    <em className="icon ni ni-edit"></em>
+                    <span className="ml5">Edit</span>
+                  </button>
+                  <button
+                    onClick={() => initDelete(prmpt.id)}
+                    className="btn btn-outline-danger btn-sm flex-grow-1 ml5"
+                  >
+                    <em className="icon ni ni-trash"></em>
+                    <span className="ml5">Delete</span>
+                  </button>
+                </div>
                                       </div>
                                     )}
                                   </td>
@@ -279,6 +285,16 @@ const AdminPrompts = () => {
                           setPrompt({ ...prompt, description: e.target.value })
                         }
                       />
+                       <TextInput
+                        isTextArea={true}
+                        label={"Prompt"}
+                        error={errors.prompt}
+                        value={prompt.prompt}
+                        cols={12}
+                        onChange={(e) =>
+                          setPrompt({ ...prompt, prompt: e.target.value })
+                        }
+                      />
                       <div className="col-md-12">
                         <button
                           className="btn btn-primary"
@@ -310,4 +326,4 @@ const AdminPrompts = () => {
   );
 };
 
-export default AdminPrompts;
+export default AdminPrompts
