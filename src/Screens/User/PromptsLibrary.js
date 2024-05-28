@@ -3,9 +3,15 @@ import useTitle from "../../Hooks/useTitle";
 import { useEffect, useState } from "react";
 import Helpers from "../../Config/Helpers";
 import PageLoader from "../../Components/Loader/PageLoader";
-import { Link, useNavigate } from "react-router-dom";
-import TextInput from "../../Components/Input";
-import FileInput from "../../Components/FileInput";
+import { useNavigate } from "react-router-dom";
+import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
+import { createClient } from '@supabase/supabase-js';
+import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
+import { OpenAIEmbeddings } from "@langchain/openai";
+
+const sbUrl = 'https://viekdgdthevphwbclorz.supabase.co';
+const sbApiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpZWtkZ2R0aGV2cGh3YmNsb3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTYzNzE3ODYsImV4cCI6MjAzMTk0Nzc4Nn0.2_1-9-bvTjTs16WkV_xSe6PQfKDnmNUCttdcs90RoVQ';
+const openAiApiKey = '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';
 
 const PromptsLibrary = () => {
   useTitle("Prompts Library");
@@ -18,7 +24,7 @@ const PromptsLibrary = () => {
   const [filteredPrompts, setFilteredPrompts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
   const [promptid, setPromptid] = useState(null);
   const [instructions, setInstructions] = useState(null);
   const [errors, setErrors] = useState({});
@@ -36,40 +42,71 @@ const PromptsLibrary = () => {
   const handleCancel = () => {
     setIsEditing(false);
     setPromptid(null);
-    setFile(null);
+    setFiles([]);
     setInstructions(null);
     setShowFormPrompt(false);
   };
-  const sendPrompt = () => {
-    if (file) {
+
+  const sendPrompt = async () => {
+    if (files.length > 0) {
       setIsLoading(true);
-      console.log(file);
-      axios
-        .post(
+      console.log(files);
+      try {
+        const formData = new FormData();
+        files.forEach((file) => formData.append("files[]", file));
+        formData.append("prompt_id", promptid);
+
+        const response = await axios.post(
           `${Helpers.apiUrl}user/save`,
-          { file: file, prompt_id: promptid, instructions: instructions },
+          formData,
           Helpers.authFileHeaders
-        )
-        .then((response) => {
-          navigate(`/user/chat/${response.data.chat_id}`);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          if (error.response) {
-            Helpers.toast("error", error.response.data.message);
-          } else {
-            Helpers.toast("error", "Unexpected error occured");
-          }
-          setIsLoading(false);
+        );
+
+        const chatId = response.data.chat_id;
+        const textResponse = await axios.get(
+          `${Helpers.apiUrl}chat/get/${chatId}`,
+          Helpers.authFileHeaders
+        );
+        const chatData = textResponse.data.file_content;
+        const splitter = new RecursiveCharacterTextSplitter({
+          chunkSize: 500,
+          chunkOverlap: 50,
+          separators: ['\n\n', '\n', ' ', '']
         });
+
+        const output = await splitter.createDocuments([chatData]);
+        const client = createClient(sbUrl, sbApiKey);
+        await SupabaseVectorStore.fromDocuments(
+          output,
+          new OpenAIEmbeddings({ openAIApiKey: openAiApiKey }),
+          {
+            client,
+            tableName: 'documents',
+          }
+        );
+
+        // Navigate to the chat page using the combined chat_id
+        navigate(`/user/chat/${chatId}`, { state: { fileName: files.map(file => file.name).join(", ") } });
+
+      } catch (error) {
+        if (error.response) {
+          Helpers.toast("error", error.response.data.message);
+        } else {
+          Helpers.toast("error", "Unexpected error occurred");
+        }
+      } finally {
+        setIsLoading(false);
+      }
     } else {
       Helpers.toast("error", "Can't send without file");
     }
   };
+
   const handleClick = (prompt) => {
     setShowFormPrompt(true);
     setPromptid(prompt.id);
   };
+
   const getPrompts = () => {
     setPageLoading(true);
     axios
@@ -203,7 +240,7 @@ const PromptsLibrary = () => {
                 <div class="nk-block">
                   <div class="nk-block-head nk-block-head-sm">
                     <div class="nk-block-head-content">
-                      <h3 class="nk-block-title">upload File</h3>
+                      <h3 class="nk-block-title">Upload Files</h3>
                     </div>
                   </div>
                   <div class="card shadown-none">
@@ -211,31 +248,24 @@ const PromptsLibrary = () => {
                       <div class="row g-3 gx-gs">
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label className="form-label">File</label>
+                            <label className="form-label">Files</label>
                             <div className="form-control-wrap">
                               <input
                                 type="file"
                                 className="form-control"
-                                onChange={(e) => setFile(e.target.files[0])}
+                                onChange={(e) => setFiles(Array.from(e.target.files))}
+                                multiple
                               />
                             </div>
                           </div>
                         </div>
-                        <TextInput
-                          isTextArea={true}
-                          label={"Instructions"}
-                          error={errors.instructions}
-                          value={prompt.instructions}
-                          cols={12}
-                          onChange={(e) => setInstructions(e.target.value)}
-                        />
                         <div className="col-md-12">
                           <button
                             className="btn btn-primary"
                             disabled={isLoading}
                             onClick={sendPrompt}
                           >
-                            {isLoading ? "sending..." : "send"}
+                            {isLoading ? "Sending..." : "Send"}
                           </button>
                           <button
                             className="btn btn-outline-danger ml10"

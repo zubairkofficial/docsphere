@@ -6,6 +6,7 @@ class Helpers {
   static server = "apidocsphere.cyberify.co";
   static basePath = `//${this.localhost}`;
   static apiUrl = `${this.basePath}/api/`;
+  static googleUrl = `${this.basePath}/`;
 
   static authUser = JSON.parse(localStorage.getItem("user")) ?? {};
 

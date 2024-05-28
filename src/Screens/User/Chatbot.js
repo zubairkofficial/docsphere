@@ -458,7 +458,7 @@ const Chatbot = () => {
                   type="submit"
                   className="btn btn-md btn-primary"
                   style={{
-                    backgroundColor: "#671AB3",
+                    backgroundColor: "#671BB3",
                     color: "#ffffff",
                     borderRadius: "20px",
                   }}
