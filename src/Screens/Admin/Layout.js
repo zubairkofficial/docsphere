@@ -32,6 +32,11 @@ const UserLayout = () => {
       text: 'Users',
     },
     {
+      path: '/admin/packages',
+      icon: 'ni ni-money',
+      text: 'Packages',
+    },
+    {
       path: '/admin/categories',
       icon: 'ni ni-folder-list',
       text: 'Categories',
@@ -46,6 +51,7 @@ const UserLayout = () => {
       icon: 'ni ni-folder-list',
       text: 'Templates',
     },
+
   ];
   return (
    <>

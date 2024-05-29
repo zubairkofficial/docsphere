@@ -29,6 +29,7 @@ import Template2 from "./Screens/User/template/Templates/Template2";
 import Template3 from "./Screens/User/template/Templates/Template3";
 import Template4 from "./Screens/User/template/Templates/Template4";
 import TemplatesLibrary from "./Screens/User/TemplatesLibrary";
+import AdminPackages from "./Screens/Admin/Packages";
 
 const Auth = ({ children, isAuth = true, isAdmin = false }) => {
   let user = Helpers.getItem("user", true);
@@ -256,6 +257,14 @@ function App() {
             element={
               <Auth isAdmin={true}>
                 <AdminPrompts />
+              </Auth>
+            }
+          />
+          <Route
+            path="/admin/packages"
+            element={
+              <Auth isAdmin={true}>
+                <AdminPackages />
               </Auth>
             }
           />
