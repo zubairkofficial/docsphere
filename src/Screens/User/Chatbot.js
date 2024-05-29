@@ -15,14 +15,11 @@ import { ChatOpenAI } from "@langchain/openai";
 import MarkdownIt from "markdown-it";
 import { jsPDF } from "jspdf";
 import Template1 from "./template/Templates/Template1";
-<<<<<<< HEAD
-=======
 import { RunnableSequence, RunnablePassthrough } from "@langchain/core/runnables";
 import { BaseLangChain } from "@langchain/core/language_models/base";
 
 const openAIApiKey = "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";
 
->>>>>>> 82e6f3a1326d3fcea135f143167f7d22f2a923ba
 const md = new MarkdownIt();
 
 const Chatbot = () => {
