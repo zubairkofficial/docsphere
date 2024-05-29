@@ -196,7 +196,7 @@ const Chat = () => {
                             </div>
                             <div className="chat-divider"></div>
                           </div>
-                          <div className="col-12">
+                          <div className="col-6">
                             <div className="message" ref={targetRef}>
                               <ChatGPTFormatter
                                 response={msg.text}

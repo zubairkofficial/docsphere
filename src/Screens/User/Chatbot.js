@@ -9,7 +9,6 @@ import ChatGPTFormatter from "../../Components/ChatgptFormatter";
 import MarkdownIt from "markdown-it";
 import { jsPDF } from "jspdf";
 import Template1 from "./template/Templates/Template1";
-
 const md = new MarkdownIt();
 
 const Chatbot = () => {
@@ -102,7 +101,10 @@ const Chatbot = () => {
             response.data.messages.length === 0 ||
             response.data.chat_message === ""
           ) {
-            getFirstResponse();
+            // getFirstResponse();
+            Helpers.toast("success", "File Uploaded Successfully, Now Write something to query");
+
+
           } else {
             setMessages(response.data.messages);
             setTimeout(() => {
@@ -115,69 +117,76 @@ const Chatbot = () => {
 
   const getFirstResponse = () => {
     setIsLoading(true);
-    let msg = {
-      message: "",
-      user_id: Helpers.authUser.id,
-      chat_id: chat.id,
-      is_bot: 1,
-    };
-    let msgs = messages;
-    msgs.push(msg);
-    setMessages(msgs);
-    setTimeout(() => {
-      scrollToBottom();
-    }, 500);
-    const data = {
-      chatid: chatid,
-    };
-    const controller = new AbortController();
-    const signal = controller.signal;
-    fetch(`${Helpers.apiUrl}bot/init-response`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(data),
-      signal,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          response.json().then((error) => {
-            Helpers.toast("error", error.message);
-            setIsLoading(false);
-          });
-        } else {
-          const reader = response.body.getReader();
-          const decoder = new TextDecoder();
+     let msg = {
+        message: "Now Your file has been uploaded please Write some query to get Answers",
+        user_id: Helpers.authUser.id,
+        chat_id: chat.id,
+        is_bot: 1,
+      };
+    setMessages(msg)
+    // let msg = {
+    //   message: "",
+    //   user_id: Helpers.authUser.id,
+    //   chat_id: chat.id,
+    //   is_bot: 1,
+    // };
+    // let msgs = messages;
+    // msgs.push(msg);
+    // setMessages(msgs);
+    // setTimeout(() => {
+    //   scrollToBottom();
+    // }, 500);
+    // const data = {
+    //   chatid: chatid,
+    // };
+    // const controller = new AbortController();
+    // const signal = controller.signal;
+    // fetch(`${Helpers.apiUrl}bot/init-response`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //   },
+    //   body: JSON.stringify(data),
+    //   signal,
+    // })
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       response.json().then((error) => {
+    //         Helpers.toast("error", error.message);
+    //         setIsLoading(false);
+    //       });
+    //     } else {
+    //       const reader = response.body.getReader();
+    //       const decoder = new TextDecoder();
 
-          function processText({ done, value }) {
-            if (done) {
-              setIsLoading(false);
-              return;
-            }
-            let text = decoder.decode(value);
-            if (text.endsWith("[DONE]")) {
-              text = text.slice(0, -6);
-            }
-            let withLines = text.replace(/\\n/g, "\n");
-            setMessages((prevMessages) => {
-              const updatedMessages = [...prevMessages];
-              updatedMessages[0].message += withLines;
-              return updatedMessages;
-            });
-            setTimeout(() => {
-              scrollToBottom();
-            }, 500);
-            reader.read().then(processText);
-          }
-          reader.read().then(processText);
-        }
-      })
-      .catch((error) => {
-        console.log("ERROR::", error);
-        setIsLoading(false);
-      });
+    //       function processText({ done, value }) {
+    //         if (done) {
+    //           setIsLoading(false);
+    //           return;
+    //         }
+    //         let text = decoder.decode(value);
+    //         if (text.endsWith("[DONE]")) {
+    //           text = text.slice(0, -6);
+    //         }
+    //         let withLines = text.replace(/\\n/g, "\n");
+    //         setMessages((prevMessages) => {
+    //           const updatedMessages = [...prevMessages];
+    //           updatedMessages[0].message += withLines;
+    //           return updatedMessages;
+    //         });
+    //         setTimeout(() => {
+    //           scrollToBottom();
+    //         }, 500);
+    //         reader.read().then(processText);
+    //       }
+    //       reader.read().then(processText);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log("ERROR::", error);
+    //     setIsLoading(false);
+    //   });
   };
 
   const getResponse = (btnPrompt = "") => {

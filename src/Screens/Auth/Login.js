@@ -10,7 +10,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const defaultUser = {
-    email: "admin@docsphere.ai",
+    email: "testemail@test.com",
     password: "12345678",
   };
 
