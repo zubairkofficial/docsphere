@@ -5,7 +5,7 @@ class Helpers {
   
   static localhost = "127.0.0.1:8000";
   static server = "docsphere.cyberifyportfolio.com";
-  static basePath = `//${this.server}`;
+  static basePath = `//${this.localhost}`;
   static apiUrl = `${this.basePath}/api/`;
   static googleUrl = `${this.basePath}/`;
 

@@ -1,14 +1,28 @@
 import { useEffect, useRef, useState } from "react";
 import PageLoader from "../../Components/Loader/PageLoader";
 import { Clipboard, Send, ThumbsDown, ThumbsUp } from "react-feather";
+import { PromptTemplate } from "@langchain/core/prompts"
 import Helpers from "../../Config/Helpers";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ChatGPTFormatter from "../../Components/ChatgptFormatter";
+import { StringOutputParser } from "@langchain/core/output_parsers";
+import { retriever } from "../../Components/retriever.js";
+import { combineDocs } from "../../Components/combineDocs.js";
+import { ChatOpenAI } from "@langchain/openai";
+
 // import { usePDF } from "react-to-pdf";
 import MarkdownIt from "markdown-it";
 import { jsPDF } from "jspdf";
 import Template1 from "./template/Templates/Template1";
+<<<<<<< HEAD
+=======
+import { RunnableSequence, RunnablePassthrough } from "@langchain/core/runnables";
+import { BaseLangChain } from "@langchain/core/language_models/base";
+
+const openAIApiKey = "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";
+
+>>>>>>> 82e6f3a1326d3fcea135f143167f7d22f2a923ba
 const md = new MarkdownIt();
 
 const Chatbot = () => {
@@ -189,7 +203,8 @@ const Chatbot = () => {
     //   });
   };
 
-  const getResponse = (btnPrompt = "") => {
+  
+const getResponse = async (btnPrompt = "") => {
     if (btnPrompt || userInput) {
       setIsLoading(true);
       let msg = {
@@ -198,6 +213,58 @@ const Chatbot = () => {
         chat_id: chat.id,
         is_bot: 0,
       };
+      let finalPrompt = '';
+
+      // Create a custom logging function
+      const logPrompt = (prompt) => {
+          finalPrompt = prompt;
+          console.log('Current Prompt:', finalPrompt);
+          return prompt; // Return the prompt unchanged
+      };
+      
+      const llm = new ChatOpenAI({ openAIApiKey });
+      const standAloneTemplate = `Given a question, convert the question to a standalone question. 
+      Question: {question}
+      standalone question:`;
+      const standAlonePrompt = PromptTemplate.fromTemplate(standAloneTemplate);
+      
+      const answerTemplate = `You are a helpful and enthusiastic support bot who can answer a given question based on the context provided. Try to find the answer in the context. If you really don't know the answer, say "I'm sorry, I don't know the answer to that." And direct the questioner to email help@docsphere.com. Don't try to make up an answer. Always speak as if you were chatting to a friend.
+      context: {context}
+      question: {question}
+      answer:`;
+      
+      const answerPrompt = PromptTemplate.fromTemplate(answerTemplate);
+      
+      const standAloneQuestionChain = standAlonePrompt.pipe(logPrompt).pipe(llm).pipe(new StringOutputParser());
+      
+      const retrieverChain = RunnableSequence.from([
+        prevResult => prevResult.standalone_question,
+        retriever,
+        combineDocs,
+      ]);
+      
+      const answerChain = answerPrompt.pipe(logPrompt).pipe(llm).pipe(new StringOutputParser()); // Log the answer prompt
+      const chain = RunnableSequence.from([
+        {
+          standalone_question: standAloneQuestionChain,
+          original_input: new RunnablePassthrough(),
+        },
+        {
+          context: retrieverChain,
+          question: ({ original_input }) => original_input.question,
+        },
+        answerChain,
+      ]);
+      
+      const botresponse = await chain.invoke({ 
+        question: userInput,
+      });
+      
+      const lastprompt = finalPrompt.value;
+
+      console.log("Final Prompt:", finalPrompt.value); // Log the final prompt
+      console.log("Response:", botresponse);
+      
       let msgs = messages;
       msgs.push(msg);
       setMessages(msgs);
@@ -208,6 +275,7 @@ const Chatbot = () => {
       data.append("chatid", chatid);
       data.append("file", file);
       data.append("input", btnPrompt ? btnPrompt : userInput);
+      data.append("lastprompt", lastprompt);
       addMessage();
       setUserInput("");
       const controller = new AbortController();
@@ -238,10 +306,12 @@ const Chatbot = () => {
                 return;
               }
               let text = decoder.decode(value);
+              // let text = botresponse;
               if (text.endsWith("[DONE]")) {
                 text = text.slice(0, -6);
               }
               let withLines = text.replace(/\\n/g, "\n");
+              // let withLines = text;
               setMessages((prevMessages) => {
                 const updatedMessages = [...prevMessages];
                 updatedMessages[messages.length - 1].message += withLines;
@@ -262,7 +332,7 @@ const Chatbot = () => {
     } else {
       Helpers.toast("error", "Can't send without input");
     }
-  };
+};
 
   const addMessage = () => {
     let msg = {

@@ -1,4 +1,4 @@
-import TextInput from "../../../Components/Input";
+import TextInput from "./Input";
 
 const PromptEditor = ({
   questions,

@@ -9,6 +9,7 @@ import { createClient } from '@supabase/supabase-js';
 import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
 import { OpenAIEmbeddings } from "@langchain/openai";
 
+
 const sbUrl = 'https://viekdgdthevphwbclorz.supabase.co';
 const sbApiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpZWtkZ2R0aGV2cGh3YmNsb3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTYzNzE3ODYsImV4cCI6MjAzMTk0Nzc4Nn0.2_1-9-bvTjTs16WkV_xSe6PQfKDnmNUCttdcs90RoVQ';
 const openAiApiKey = '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';
@@ -73,7 +74,7 @@ const PromptsLibrary = () => {
           chunkOverlap: 50,
           separators: ['\n\n', '\n', ' ', '']
         });
-
+        console.log(textResponse);
         const output = await splitter.createDocuments([chatData]);
         const client = createClient(sbUrl, sbApiKey);
         await SupabaseVectorStore.fromDocuments(
