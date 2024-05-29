@@ -114,6 +114,7 @@ const Chatbot = () => {
           ) {
             // getFirstResponse();
             Helpers.toast("success", "File Uploaded Successfully, Now Write something to query");
+            
 
 
           } else {
@@ -322,7 +323,9 @@ const getResponse = async (btnPrompt = "") => {
               reader.read().then(processText);
             }
             reader.read().then(processText);
+
           }
+          setIsFirstResponse(false)
         })
         .catch((error) => {
           console.log("ERROR::", error);
