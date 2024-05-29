@@ -34,7 +34,7 @@ const Chatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [buttons, setButtons] = useState([]);
   const [file, setFile] = useState(null);
-
+  const [isFirstResponse,setIsFirstResponse] = useState(true)
   const scrollToBottom = () => {
     window.scrollTo(0, document.body.scrollHeight);
   };
@@ -135,6 +135,8 @@ const Chatbot = () => {
         is_bot: 1,
       };
     setMessages(msg)
+    setIsLoading(true);
+
     // let msg = {
     //   message: "",
     //   user_id: Helpers.authUser.id,
@@ -357,7 +359,23 @@ const getResponse = async (btnPrompt = "") => {
             ) : (
               <div class="nk-content-body">
                 <div class="nk-block">
-                  {messages.map((msg, index) => {
+                  {isFirstResponse ? <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    fontSize: '24px',
+    color: '#333',
+    // padding: '20px',
+    // border: '2px solid #333',
+    borderRadius: '10px',
+    backgroundColor: '#f9f9f9',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+    textAlign: 'center'
+}}>
+    Your file has been uploaded successfully. You can now enter your prompt.
+</div>
+ :messages.map((msg, index) => {
                     return (
                       <div
                         key={index}
