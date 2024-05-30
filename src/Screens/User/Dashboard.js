@@ -7,6 +7,24 @@ import { Link } from "react-router-dom";
 const UserDashboard = () => {
   useTitle("Dashboard");
   const [showMobileNav, setShowMobileNav] = useState(false);
+  const [organizationName, setOrganizationName] = useState("");
+
+    useEffect(() => {
+    if (Helpers.authUser.org_id) {
+      fetchOrganizationName(Helpers.authUser.org_id);
+    }
+    console.log(Helpers.authUser);
+  }, []);
+
+  const fetchOrganizationName = async (orgId) => {
+    try {
+      const response = await axios.get(`${Helpers.apiUrl}organizations/${orgId}`);
+      setOrganizationName(response.data.org_name);
+    } catch (error) {
+      console.error("Failed to fetch organization name", error);
+    }
+  };
+
 
   return (
     <div className="nk-wrap">
@@ -20,7 +38,7 @@ const UserDashboard = () => {
                   <em className="icon ni ni-menu"> </em>
                 </button>
                 <button className="btn btn-md btn-zoom btn-icon sidebar-toggle d-none d-sm-inline-flex" onClick={() => setShowMobileNav(true)}
- >
+>
                   <em className="icon ni ni-menu"> </em>
                 </button>
               </div>
@@ -376,10 +394,16 @@ const UserDashboard = () => {
             <div className="nk-content-body">
               <div className="nk-block-head nk-page-head">
                 <div className="nk-block-head-between">
-                  <div className="nk-block-head-content">
-                    <h2 className="display-6">
+                  <div className="nk-block-head-content align-center d-flex justify-content-between w-100">
+                    <h2 className="display-6 mb-0 py-2 px-3 ">
                       Welcome {Helpers.authUser.name}!
                     </h2>
+                    {organizationName && (
+                      <h4 className=" px-3 py-2 bg-light rounded-4">
+                        Org: {organizationName}
+                      </h4>
+                    )}
+
                   </div>
                 </div>
               </div>
