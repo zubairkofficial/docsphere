@@ -18,7 +18,7 @@ const UserDashboard = () => {
 
   const fetchOrganizationName = async (orgId) => {
     try {
-      const response = await axios.get(`${Helpers.apiUrl}organizations/${orgId}`);
+      const response = await axios.get(`${Helpers.apiUrl}user/organizations/${orgId}`, Helpers.authHeaders);
       setOrganizationName(response.data.org_name);
     } catch (error) {
       console.error("Failed to fetch organization name", error);

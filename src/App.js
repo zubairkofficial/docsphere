@@ -30,6 +30,8 @@ import Template3 from "./Screens/User/template/Templates/Template3";
 import Template4 from "./Screens/User/template/Templates/Template4";
 import TemplatesLibrary from "./Screens/User/TemplatesLibrary";
 import AdminPackages from "./Screens/Admin/Packages";
+import OrganizationMembers from "./Screens/User/OrganizationMembers";
+
 
 const Auth = ({ children, isAuth = true, isAdmin = false }) => {
   let user = Helpers.getItem("user", true);
@@ -135,6 +137,14 @@ function App() {
             element={
               <Auth>
                 <UserDashboard />
+              </Auth>
+            }
+          />
+          <Route
+            path="/user/org-members"
+            element={
+              <Auth>
+                <OrganizationMembers />
               </Auth>
             }
           />
