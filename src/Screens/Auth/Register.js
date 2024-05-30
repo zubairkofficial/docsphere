@@ -8,6 +8,7 @@ import Helpers from "../../Config/Helpers";
 
 const Register = () => {
     useTitle("Register");
+    const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
 
@@ -21,7 +22,10 @@ const Register = () => {
     const [user, setUser] = useState(defaultUser);
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState({});
-
+    const togglePasswordVisibility = () => {
+        setShowPassword((prevState) => !prevState);
+      };
+    
     const handleRegistration = (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -64,14 +68,33 @@ const Register = () => {
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="register-one__form__email">
-                                <input type="password"  value={user.password} onChange={e => setUser({...user, password: e.target.value})} class="form-control form-control-lg" placeholder="Enter Password" />
+                                <div class="register-one_form_password position-relative">
+                                <input   type={showPassword ? "text" : "password"} value={user.password} onChange={e => setUser({...user, password: e.target.value})} class="form-control form-control-lg" placeholder="Enter Password" />
+                                     <span
+                                        onClick={togglePasswordVisibility}
+                                        className="position-absolute"
+                                        style={{ top: '50%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                                        >
+                                    <i className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></i>
+                                    </span>
+                                     
+
+
                                 <small className="text-danger">{ errors.password ? errors.password[0] : '' }</small>
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="register-one__form__email">
-                                    <input type="password" value={user.password_confirmation} onChange={e => setUser({...user, password_confirmation: e.target.value})} class="form-control form-control-lg" placeholder="Confirm Password"  />
+                                <div class="register-one_form_password position-relative">
+                                    <input  type={showPassword ? "text" : "password"}  value={user.password_confirmation} onChange={e => setUser({...user, password_confirmation: e.target.value})} class="form-control form-control-lg" placeholder="Confirm Password"  />
+
+                                    <span
+                                        onClick={togglePasswordVisibility}
+                                        className="position-absolute"
+                                        style={{ top: '50%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                                        >
+                                    </span>
+
+
                                 </div>
                             </div>
                             <div class="col-md-12">
