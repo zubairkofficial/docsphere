@@ -37,6 +37,7 @@ const AdminPackages = () => {
           setIsEditing(false);
         }
         allPackages();
+        Helpers.toast("Success", response.data.message);
         setShowAddPackage(false);
         setIsLoading(false);
         handleCancel();

@@ -23,21 +23,7 @@ const UserLayout = () => {
     setShowMobileNav(false);
   }, [location.pathname]);
 
-  useEffect(() => {
-    if (Helpers.authUser.org_id) {
-      fetchOrganizationName(Helpers.authUser.org_id);
-    }
-    console.log(Helpers.authUser);
-  }, []);
 
-  const fetchOrganizationName = async (orgId) => {
-    try {
-      const response = await axios.get(`${Helpers.apiUrl}user/organizations/${orgId}`, Helpers.authHeaders);
-      setOrganizationName(response.data.org_name);
-    } catch (error) {
-      console.error("Failed to fetch organization name", error);
-    }
-  };
 
   const sidebarMenu = [
     {
