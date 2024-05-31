@@ -37,9 +37,15 @@ const UserLayout = () => {
       text: "Prompts Library"
     },
     {
+      path: "/user/pricing",
+      icon: "ni ni-layers",
+      text: "Pricing"
+    },
+    {
       path: "/user/chat-history",
       icon: "ni ni-clock",
       text: "History"
+
     },
     ...(Helpers.authUser.org_id && Helpers.authUser.is_org_owner
       ? [
@@ -241,14 +247,14 @@ const UserLayout = () => {
           <div className="nk-sidebar-element nk-sidebar-footer">
             <div className="nk-sidebar-footer-extended pt-3">
               <div className="border border-light rounded-3">
-                {/* <div className="px-3 py-2 bg-white border-bottom border-light rounded-top-3">
+                <div className="px-3 py-2 bg-white border-bottom border-light rounded-top-3">
                   <div className="d-flex flex-wrap align-items-center justify-content-between">
                     <h6 className="lead-text">Free Plan</h6>
                     <a className="link link-primary" href="pricing-plans.html"><em className="ni ni-spark-fill icon text-warning"></em><span>Upgrade</span></a>
                   </div>
                   <div className="progress progress-md"><div className="progress-bar" data-progress="25%"></div></div>
                   <h6 className="lead-text mt-2">1,360 <span className="text-light">words left</span></h6> 
-                </div> */}
+                </div>
                 <Link
                   className="d-flex px-3 py-2 bg-primary bg-opacity-10 rounded-bottom-3"
                   to={"/user/profile"}

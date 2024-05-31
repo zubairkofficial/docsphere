@@ -510,16 +510,6 @@ const UserLayout = () => {
                 <div class="nk-footer-links px-3">
                   <ul class="nav nav-sm">
                     <li class="nav-item">
-                      <Link class="nav-link" to="/">
-                        Home
-                      </Link>
-                    </li>
-                    <li class="nav-item">
-                      <Link class="nav-link" to="/user/pricing-plans">
-                        Pricing
-                      </Link>
-                    </li>
-                    <li class="nav-item">
                       <Link class="nav-link" to="/privacy-policy">
                         Privacy Policy
                       </Link>

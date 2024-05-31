@@ -50,16 +50,20 @@ const ChatHistory = () => {
                           <div class="nk-timeline-symbol-dot"></div>
                         </div>
                         <div class="nk-timeline-content">
-                          <Link to={`/user/chat/${chat.chatid}`}>
+                          <Link to={{pathname : `/user/chat/${chat.chatid}`,
+                          }}  state = {{ isHistory : true  }} 
+
+                               >
+
                             <div class="card">
                               <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                   <div class="d-flex align-items-center">
                                     <div class="media media-xs media-middle media-circle text-primary bg-primary bg-opacity-20">
-                                      {chat.prompt.name.charAt(0)}
+                                      {chat.prompt?.name.charAt(0)}
                                     </div>
                                     <h5 class="fs-14px fw-normal ms-2">
-                                      {chat.prompt.name}
+                                      {chat.prompt?.name}
                                     </h5>
                                   </div>
                                   <button
