@@ -31,6 +31,7 @@ import Template4 from "./Screens/User/template/Templates/Template4";
 import TemplatesLibrary from "./Screens/User/TemplatesLibrary";
 import AdminPackages from "./Screens/Admin/Packages";
 import OrganizationMembers from "./Screens/User/OrganizationMembers";
+import PricingPlans from "./Screens/User/PricingPlans";
 
 
 const Auth = ({ children, isAuth = true, isAdmin = false }) => {
@@ -137,6 +138,14 @@ function App() {
             element={
               <Auth>
                 <UserDashboard />
+              </Auth>
+            }
+          />
+           <Route
+            path="/user/pricing"
+            element={
+              <Auth>
+                <PricingPlans />
               </Auth>
             }
           />

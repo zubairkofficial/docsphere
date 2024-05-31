@@ -10,6 +10,7 @@ import { StringOutputParser } from "@langchain/core/output_parsers";
 import { retriever } from "../../Components/retriever.js";
 import { combineDocs } from "../../Components/combineDocs.js";
 import { ChatOpenAI } from "@langchain/openai";
+import { useLocation } from 'react-router-dom';
 
 // import { usePDF } from "react-to-pdf";
 import MarkdownIt from "markdown-it";
@@ -26,6 +27,8 @@ const Chatbot = () => {
   const { chatid } = useParams();
   const navigate = useNavigate();
   // const { toPDF, targetRef } = usePDF({ filename: "Download.pdf" });
+  const location = useLocation();
+
   const [pageLoading, setPageLoading] = useState(false);
   const [chat, setChat] = useState({});
   const [isDone, setIsDone] = useState(true);
@@ -35,6 +38,9 @@ const Chatbot = () => {
   const [buttons, setButtons] = useState([]);
   const [file, setFile] = useState(null);
   const [isFirstResponse,setIsFirstResponse] = useState(true)
+
+  const isHistory = location.state ? location.state.isHistory : null;
+  console.log("Is History value ",isHistory)
   const scrollToBottom = () => {
     window.scrollTo(0, document.body.scrollHeight);
   };
@@ -218,7 +224,7 @@ const getResponse = async (btnPrompt = "") => {
       // Create a custom logging function
       const logPrompt = (prompt) => {
           finalPrompt = prompt;
-          console.log('Current Prompt:', finalPrompt);
+          // console.log('Current Prompt:', finalPrompt);
           return prompt; // Return the prompt unchanged
       };
       
@@ -262,8 +268,8 @@ const getResponse = async (btnPrompt = "") => {
       
       const lastprompt = finalPrompt.value;
 
-      console.log("Final Prompt:", finalPrompt.value); // Log the final prompt
-      console.log("Response:", botresponse);
+      // console.log("Final Prompt:", finalPrompt.value); // Log the final prompt
+      // console.log("Response:", botresponse);
       
       let msgs = messages;
       msgs.push(msg);
@@ -362,7 +368,7 @@ const getResponse = async (btnPrompt = "") => {
             ) : (
               <div class="nk-content-body">
                 <div class="nk-block">
-                  {isFirstResponse ? <div style={{
+                  {isFirstResponse && !isHistory ? <div style={{
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
