@@ -5,8 +5,8 @@ import Helpers from "../../Config/Helpers";
 import useTitle from "../../Hooks/useTitle";
 import Pagination from "../../Components/Pagination";
 
-const UserTransactions = () => {
-  useTitle("User Transactions");
+const AdminTransactions = () => {
+  useTitle("Admin Transactions");
   const navigate = useNavigate();
   const [transactions, setTransactions] = useState([]);
   const [transactionData, setTransactionData] = useState([]);
@@ -14,12 +14,16 @@ const UserTransactions = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
+    if (!Helpers.authUser.id || Helpers.authUser.user_type !== 1) {
+      navigate("/"); // Redirect if the user is not logged in or not an admin
+    } else {
       fetchTransactions();
+    }
   }, []);
 
   const fetchTransactions = () => {
     axios
-      .get(`${Helpers.apiUrl}transactions/all-transactions`, Helpers.authHeaders)
+      .get(`${Helpers.apiUrl}transactions/admin/get-transactions`, Helpers.authHeaders)
       .then((response) => {
         if (response.data && Array.isArray(response.data)) {
           let paginatedData = Helpers.paginate(response.data);
@@ -69,8 +73,8 @@ const UserTransactions = () => {
             <div className="nk-block-head nk-page-head">
               <div className="nk-block-head-between">
                 <div className="nk-block-head-content">
-                  <h2 className="display-6">User Transactions</h2>
-                  <p>View your transactions</p>
+                  <h2 className="display-6">Admin Transactions</h2>
+                  <p>View all transactions</p>
                 </div>
               </div>
             </div>
@@ -81,17 +85,19 @@ const UserTransactions = () => {
                     <table className="table">
                       <thead>
                         <tr>
-                          <th>Sr. #</th>
-                          <th>Package Type</th>
-                          <th>Purchase Date</th>
-                          <th>Expiry Date</th>
-                          <th></th>
+                          <th style={{ width: '5%' }}>Sr. #</th>
+                          <th style={{ width: '15%' }}>Org Name</th>
+                          <th style={{ width: '20%' }}>Package Type</th>
+                          <th style={{ width: '25%' }}>Purchase</th>
+                          <th style={{ width: '25%' }}>Expiry</th>
+                          <th style={{ width: '10%' }}></th>
                         </tr>
                       </thead>
                       <tbody>
                         {transactions[currentPage]?.map((transaction, index) => (
                           <tr key={transaction.id}>
                             <td>{index + 1}</td>
+                            <td>{transaction.org_name}</td>
                             <td>{transaction.package_type}</td>
                             <td>{transaction.purchase_date}</td>
                             <td>{transaction.expiry_date}</td>
@@ -140,4 +146,4 @@ const UserTransactions = () => {
   );
 };
 
-export default UserTransactions;
+export default AdminTransactions;

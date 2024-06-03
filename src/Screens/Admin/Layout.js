@@ -37,7 +37,7 @@ const UserLayout = () => {
       text: 'Packages',
     },
     {
-      path: "/user/transactions",
+      path: "/admin/get-transactions",
       icon: "ni ni-money",
       text: "Transactions"
     },

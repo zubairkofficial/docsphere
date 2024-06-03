@@ -37,11 +37,6 @@ const UserLayout = () => {
       text: "Prompts Library"
     },
     {
-      path: "/user/transactions",
-      icon: "ni ni-money",
-      text: "Transactions"
-    },
-    {
       path: "/user/pricing",
       icon: "ni ni-layers",
       text: "Pricing"
@@ -54,6 +49,11 @@ const UserLayout = () => {
     },
     ...(Helpers.authUser.org_id && Helpers.authUser.is_org_owner
       ? [
+        {
+          path: "/user/transactions",
+          icon: "ni ni-money",
+          text: "Transactions"
+        },
           {
             path: "/user/org-members",
             icon: "ni ni-users",
