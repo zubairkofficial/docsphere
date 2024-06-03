@@ -1,10 +1,36 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const PricingPlans = () => {
-  const [isYearly, setIsYearly] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [userId, setUserId] = useState(1); // Example user ID, replace with actual user ID logic
+  const [otherField1, setOtherField1] = useState('');
+  const [otherField2, setOtherField2] = useState('');
 
-  const togglePlan = () => {
-    setIsYearly(!isYearly);
+  const plans = [
+    { id: 3, name: 'Basic', price: 'Free', features: ['1000 words/mo. generation', 'Total 5000 words generation'] },
+    { id: 4, name: 'Enterprise', price: '$225 / month', features: ['Dedicated Account Manager', 'Custom Tools'] },
+  ];
+
+  const handlePlanSelect = (planId) => {
+    setSelectedPlan(planId);
+  };
+
+  const handleBuyPlan = async () => {
+    const endpoint = 'https://your-endpoint-url.com/api/buy-plan';
+    const data = {
+      pricePlanId: selectedPlan,
+      userId: userId,
+      otherField1: otherField1,
+      daye: otherField2,
+    };
+
+    try {
+      const response = await axios.post(endpoint, data);
+      console.log('Plan purchased successfully:', response.data);
+    } catch (error) {
+      console.error('Error purchasing plan:', error);
+    }
   };
 
   return (
@@ -23,134 +49,39 @@ const PricingPlans = () => {
               </div>
             </div>
             <div className="nk-block">
-              <div className="pricing-toggle-wrap mb-4">
-                <button
-                  className={`pricing-toggle-button ${!isYearly ? 'active' : ''}`}
-                  onClick={() => setIsYearly(false)}
-                >
-                  Monthly
-                </button>
-                <button
-                  className={`pricing-toggle-button ${isYearly ? 'active' : ''}`}
-                  onClick={() => setIsYearly(true)}
-                >
-                  Yearly (Save 25%)
-                </button>
-              </div>
               <div className="card mt-xl-5">
                 <div className="row g-0">
-                  {/** Basic Plan */}
-                  <div className="col-xl-4">
-                    <div className="pricing bg-white rounded-start">
-                      <div className="pricing-content">
-                        <div className="w-sm-70 w-md-50 w-xl-100 text-center text-xl-start mx-auto">
-                          <h5 className="fw-normal text-light">Basic</h5>
-                          <h2 className="mb-3">Customized Plan</h2>
-                          <div className="pricing-price-wrap">
-                            <div className="pricing-price">
-                              <h3 className="display-1 mb-3 fw-semibold">Free</h3>
+                  {plans.map((plan) => (
+                    <div className="col-xl-6 mb-4" key={plan.id} onClick={() => handlePlanSelect(plan.id)}>
+                      <div className={`pricing card ${selectedPlan === plan.id ? 'selected' : ''} bg-white rounded h-100`}>
+                        <div className="pricing-content card-body d-flex flex-column justify-content-between">
+                          <div>
+                            <h5 className="fw-normal text-dark">{plan.name}</h5>
+                            <h2 className="mb-3">Customized Plan</h2>
+                            <div className="pricing-price-wrap">
+                              <div className="pricing-price">
+                                <h3 className="display-4 mb-3 fw-semibold">{plan.price}</h3>
+                              </div>
                             </div>
+                            <ul className="pricing-features list-unstyled">
+                              {plan.features.map((feature, index) => (
+                                <li key={index}>
+                                  <em className="icon text-primary ni ni-check-circle"></em>
+                                  <span>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
-                          <div className="mb-2">
-                            <button className="btn btn-outline-light w-100">
-                              Upgrade Now
-                            </button>
-                            <div className="d-flex align-items-center justify-content-center text-center text-light fs-12px lh-lg fst-italic mt-1">
-                              <svg width="13" height="13" viewBox="0 0 13 13" className="text-danger" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6.5 2.375V10.625" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M2.9281 4.4375L10.0719 8.5625" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M2.9281 8.5625L10.0719 4.4375" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                              </svg>
-                              <span className="ms-1">Cancel Anytime</span>
-                            </div>
-                          </div>
-                          <ul className="pricing-features">
-                            <li><em className="icon text-primary ni ni-check-circle"></em><span>1000 words/mo. generation</span></li>
-                            <li><em className="icon text-primary ni ni-check-circle"></em><span>Total 5000 words generation</span></li>
-                          
-                          </ul>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  {/** Professional Plan */}
-                  <div className="col-xl-4">
-                    <div className="pricing pricing-featured mx-n1px my-xl-n1px bg-primary mt-5">
-                      <div className="position-absolute text-center py-1 px-4 text-bg-primary rounded-top start-0 end-0 bottom-100">
-                        <div className="fw-medium lh-sm fs-14px">Most Popular</div>
-                      </div>
-                      <div className="pricing-content bg-primary-soft">
-                        <div className="w-sm-70 w-md-50 w-xl-100 text-center text-xl-start mx-auto">
-                          <h5 className="fw-normal text-light">Professional</h5>
-                          <h2 className="mb-3 text-primary">Customized Plan</h2>
-                          <div className="pricing-price-wrap">
-                            <div className={`pricing-price ${!isYearly ? 'active' : ''}`}>
-                              <h3 className="display-1 mb-3 fw-semibold">
-                                {isYearly ? "$500" : "$48"}
-                                <span className="caption-text text-light fw-normal">
-                                  / {isYearly ? "year" : "month"}
-                                </span>
-                              </h3>
-                            </div>
-                          </div>
-                          <div className="mb-2">
-                            <button className="btn btn-primary w-100">Upgrade Now</button>
-                            <div className="d-flex align-items-center justify-content-center text-center text-light fs-12px lh-lg fst-italic mt-1">
-                              <svg width="13" height="13" viewBox="0 0 13 13" className="text-danger" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6.5 2.375V10.625" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M2.9281 4.4375L10.0719 8.5625" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M2.9281 8.5625L10.0719 4.4375" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                              </svg>
-                              <span className="ms-1">Cancel Anytime</span>
-                            </div>
-                          </div>
-                          <ul className="pricing-features">
-                            <li><em className="icon text-primary ni ni-check-circle-fill"></em><span>Unlimited words generation</span></li>
-                            <li><em className="icon text-primary ni ni-check-circle-fill"></em><span>Access to all templates for free</span></li>
-                           
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/** Enterprise Plan */}
-                  <div className="col-xl-4">
-                    <div className="pricing bg-white rounded-end">
-                      <div className="pricing-content">
-                        <div className="w-sm-70 w-md-50 w-xl-100 text-center text-xl-start mx-auto">
-                          <h5 className="fw-normal text-light">Enterprise</h5>
-                          <h2 className="mb-3">Customized Plan</h2>
-                          <div className="pricing-price-wrap">
-                            <div className={`pricing-price ${!isYearly ? 'active' : ''}`}>
-                              <h3 className="display-1 mb-3 fw-semibold">
-                                {isYearly ? "$2500" : "$225"}
-                                <span className="caption-text text-light fw-normal">
-                                  / {isYearly ? "year" : "month"}
-                                </span>
-                              </h3>
-                            </div>
-                          </div>
-                          <div className="mb-2">
-                            <button className="btn btn-outline-light w-100">{isYearly ? "Contact Sales" : "Upgrade Now"}</button>
-                            <div className="d-flex align-items-center justify-content-center text-center text-light fs-12px lh-lg fst-italic mt-1">
-                              <svg width="13" height="13" viewBox="0 0 13 13" className="text-danger" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6.5 2.375V10.625" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M2.9281 4.4375L10.0719 8.5625" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M2.9281 8.5625L10.0719 4.4375" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                              </svg>
-                              <span className="ms-1">Cancel Anytime</span>
-                            </div>
-                          </div>
-                          <ul className="pricing-features">
-                            <li><em className="icon text-primary ni ni-check-circle"></em><span>Dedicated Account Manager</span></li>
-                            <li><em className="icon text-primary ni ni-check-circle"></em><span>Custom Tools</span></li>
-                         
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
+              </div>
+              <div className="mt-5 d-flex justify-content-center">
+                <button className="btn btn-primary" onClick={handleBuyPlan} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  Buy Plan
+                </button>
               </div>
               <div className="mt-5">
                 <h5>Want to learn more about our pricing &amp; plans?</h5>
