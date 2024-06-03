@@ -67,9 +67,7 @@ const PricingPlans = () => {
                           <ul className="pricing-features">
                             <li><em className="icon text-primary ni ni-check-circle"></em><span>1000 words/mo. generation</span></li>
                             <li><em className="icon text-primary ni ni-check-circle"></em><span>Total 5000 words generation</span></li>
-                            <li><em className="icon text-primary ni ni-check-circle"></em><span>Access to 10 templates</span></li>
-                            <li><em className="icon text-primary ni ni-check-circle"></em><span>Upto 5 projects can be created</span></li>
-                            <li><em className="icon text-primary ni ni-check-circle"></em><span>Only 7 days of generation history</span></li>
+                          
                           </ul>
                         </div>
                       </div>
@@ -109,9 +107,7 @@ const PricingPlans = () => {
                           <ul className="pricing-features">
                             <li><em className="icon text-primary ni ni-check-circle-fill"></em><span>Unlimited words generation</span></li>
                             <li><em className="icon text-primary ni ni-check-circle-fill"></em><span>Access to all templates for free</span></li>
-                            <li><em className="icon text-primary ni ni-check-circle-fill"></em><span>No project limitation</span></li>
-                            <li><em className="icon text-primary ni ni-check-circle-fill"></em><span>30 days of AI generation history</span></li>
-                            <li><em className="icon text-primary ni ni-check-circle-fill"></em><span>Wordpress plugin integration</span></li>
+                           
                           </ul>
                         </div>
                       </div>
@@ -148,9 +144,7 @@ const PricingPlans = () => {
                           <ul className="pricing-features">
                             <li><em className="icon text-primary ni ni-check-circle"></em><span>Dedicated Account Manager</span></li>
                             <li><em className="icon text-primary ni ni-check-circle"></em><span>Custom Tools</span></li>
-                            <li><em className="icon text-primary ni ni-check-circle"></em><span>Advanced Integrations</span></li>
-                            <li><em className="icon text-primary ni ni-check-circle"></em><span>Premium Technical Support</span></li>
-                            <li><em className="icon text-primary ni ni-check-circle"></em><span>Many More Special Features</span></li>
+                         
                           </ul>
                         </div>
                       </div>
