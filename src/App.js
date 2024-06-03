@@ -32,6 +32,7 @@ import TemplatesLibrary from "./Screens/User/TemplatesLibrary";
 import AdminPackages from "./Screens/Admin/Packages";
 import OrganizationMembers from "./Screens/User/OrganizationMembers";
 import PricingPlans from "./Screens/User/PricingPlans";
+import UserTransactions from "./Screens/User/UserTransactions";
 
 
 const Auth = ({ children, isAuth = true, isAdmin = false }) => {
@@ -186,6 +187,14 @@ function App() {
             element={
               <Auth>
                 <ChatHistory />
+              </Auth>
+            }
+          />
+          <Route
+            path="/user/transactions"
+            element={
+              <Auth>
+                <UserTransactions />
               </Auth>
             }
           />
