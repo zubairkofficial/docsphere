@@ -49,6 +49,11 @@ const UserLayout = () => {
     },
     ...(Helpers.authUser.org_id && Helpers.authUser.is_org_owner
       ? [
+        {
+          path: "/user/transactions",
+          icon: "ni ni-money",
+          text: "Transactions"
+        },
           {
             path: "/user/org-members",
             icon: "ni ni-users",

@@ -37,6 +37,11 @@ const UserLayout = () => {
       text: 'Packages',
     },
     {
+      path: "/admin/get-transactions",
+      icon: "ni ni-money",
+      text: "Transactions"
+    },
+    {
       path: '/admin/categories',
       icon: 'ni ni-folder-list',
       text: 'Categories',

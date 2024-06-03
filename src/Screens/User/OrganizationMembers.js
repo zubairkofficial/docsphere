@@ -2,8 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Helpers from "../../Config/Helpers";
-import TextInput from "../../Components/Input";
-import SelectInput from "../../Components/Select";
 import useTitle from "../../Hooks/useTitle";
 import SearchHeader from "../../Components/SearchHeader";
 import Pagination from "../../Components/Pagination";
@@ -17,6 +15,7 @@ const OrganizationMembers = () => {
     password: "",
     password_confirmation: "",
     is_org_owner: false,
+    is_active: true, // Default is_active to true
     org_id: Helpers.authUser.org_id // Ensure org_id is correctly set
   };
   const [members, setMembers] = useState([]);
@@ -39,12 +38,11 @@ const OrganizationMembers = () => {
   }, []);
 
   const saveMember = () => {
-    if (memberData.password !== memberData.password_confirmation) {
+    if (memberData.password && memberData.password !== memberData.password_confirmation) {
       setErrors({ password_confirmation: "Passwords do not match" });
       return;
     }
     setIsLoading(true);
-    console.log(memberData);
     axios
       .post(`${Helpers.apiUrl}members/save-member`, { ...memberData, org_id: Helpers.authUser.org_id }, Helpers.authHeaders)
       .then((response) => {
@@ -80,6 +78,7 @@ const OrganizationMembers = () => {
       name: member.name,
       email: member.email,
       is_org_owner: member.is_org_owner,
+      is_active: member.is_active,
       id: member.id,
       password: "",
       password_confirmation: ""
@@ -161,13 +160,14 @@ const OrganizationMembers = () => {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
+                            <th>Status</th> {/* Add Status Column */}
                             <th></th>
                           </tr>
                         </thead>
                         <tbody>
                           {members.length === 0 && (
                             <tr>
-                              <td colSpan={5}>No records found...</td>
+                              <td colSpan={6}>No records found...</td>
                             </tr>
                           )}
                           {members.length > 0 &&
@@ -178,6 +178,7 @@ const OrganizationMembers = () => {
                                   <td>{member.name}</td>
                                   <td>{member.email}</td>
                                   <td>{member.is_org_owner ? "Owner" : "Member"}</td>
+                                  <td>{member.is_active ? "Active" : "Disabled"}</td> {/* Display Status */}
                                   <td className="tb-col-end">
                                     {selectedMember === member.id ? (
                                       <div>
@@ -248,82 +249,95 @@ const OrganizationMembers = () => {
                   </div>
                 </div>
                 <div className="card shadown-none">
-                <div className="card-body">
-  <div className="row g-3 gx-gs">
-    <div className="col-md-6">
-      <label className="form-label">Name</label>
-      <input
-        type="text"
-        className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-        value={memberData.name}
-        onChange={(e) => setMemberData({ ...memberData, name: e.target.value })}
-      />
-      {errors.name && <div className="invalid-feedback">{errors.name}</div>}
-    </div>
-    <div className="col-md-6">
-      <label className="form-label">Email</label>
-      <input
-        type="email"
-        className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-        value={memberData.email}
-        onChange={(e) => setMemberData({ ...memberData, email: e.target.value })}
-      />
-      {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-    </div>
-    <div className="col-md-6">
-      <label className="form-label">Password</label>
-      <input
-        type="password"
-        className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-        value={memberData.password}
-        onChange={(e) => setMemberData({ ...memberData, password: e.target.value })}
-      />
-      {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-    </div>
-    <div className="col-md-6">
-      <label className="form-label">Confirm Password</label>
-      <input
-        type="password"
-        className={`form-control ${errors.password_confirmation ? 'is-invalid' : ''}`}
-        value={memberData.password_confirmation}
-        onChange={(e) => setMemberData({ ...memberData, password_confirmation: e.target.value })}
-      />
-      {errors.password_confirmation && <div className="invalid-feedback">{errors.password_confirmation}</div>}
-    </div>
-    <div className="col-md-6">
-      <label className="form-label">Role</label>
-      <select
-        className={`form-control ${errors.is_org_owner ? 'is-invalid' : ''}`}
-        value={memberData.is_org_owner}
-        onChange={(e) => setMemberData({ ...memberData, is_org_owner: e.target.value })}
-      >
-        <option value="0">Member</option>
-        <option value="1">Owner</option>
-      </select>
-      {errors.is_org_owner && <div className="invalid-feedback">{errors.is_org_owner}</div>}
-    </div>
-    <div className="col-md-12">
-      <button
-        className="btn btn-primary"
-        disabled={isLoading}
-        onClick={saveMember}
-      >
-        {isLoading
-          ? "Saving..."
-          : isEditing
-          ? "Save Member"
-          : "Save & Continue"}
-      </button>
-      <button
-        className="btn btn-outline-danger ml10"
-        onClick={handleCancel}
-      >
-        Cancel
-      </button>
-    </div>
-  </div>
-</div>
-
+                  <div className="card-body">
+                    <div className="row g-3 gx-gs">
+                      <div className="col-md-6">
+                        <label className="form-label">Name</label>
+                        <input
+                          type="text"
+                          className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                          value={memberData.name}
+                          onChange={(e) => setMemberData({ ...memberData, name: e.target.value })}
+                        />
+                        {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Email</label>
+                        <input
+                          type="email"
+                          className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                          value={memberData.email}
+                          onChange={(e) => setMemberData({ ...memberData, email: e.target.value })}
+                        />
+                        {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Password</label>
+                        <input
+                          type="password"
+                          className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                          value={memberData.password}
+                          onChange={(e) => setMemberData({ ...memberData, password: e.target.value })}
+                        />
+                        {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Confirm Password</label>
+                        <input
+                          type="password"
+                          className={`form-control ${errors.password_confirmation ? 'is-invalid' : ''}`}
+                          value={memberData.password_confirmation}
+                          onChange={(e) => setMemberData({ ...memberData, password_confirmation: e.target.value })}
+                        />
+                        {errors.password_confirmation && <div className="invalid-feedback">{errors.password_confirmation}</div>}
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Role</label>
+                        <select
+                          className={`form-control ${errors.is_org_owner ? 'is-invalid' : ''}`}
+                          value={memberData.is_org_owner}
+                          onChange={(e) => setMemberData({ ...memberData, is_org_owner: e.target.value })}
+                        >
+                          <option value="0">Member</option>
+                          <option value="1">Owner</option>
+                        </select>
+                        {errors.is_org_owner && <div className="invalid-feedback">{errors.is_org_owner}</div>}
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Status</label>
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            checked={memberData.is_active}
+                            onChange={(e) => setMemberData({ ...memberData, is_active: e.target.checked })}
+                          />
+                          <label className="form-check-label">
+                            Active
+                          </label>
+                        </div>
+                      </div>
+                      <div className="col-md-12">
+                        <button
+                          className="btn btn-primary"
+                          disabled={isLoading}
+                          onClick={saveMember}
+                        >
+                          {isLoading
+                            ? "Saving..."
+                            : isEditing
+                              ? "Save Member"
+                              : "Save & Continue"}
+                        </button>
+                        <button
+                          className="btn btn-outline-danger ml10"
+                          onClick={handleCancel}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

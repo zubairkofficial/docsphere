@@ -32,6 +32,8 @@ import TemplatesLibrary from "./Screens/User/TemplatesLibrary";
 import AdminPackages from "./Screens/Admin/Packages";
 import OrganizationMembers from "./Screens/User/OrganizationMembers";
 import PricingPlans from "./Screens/User/PricingPlans";
+import UserTransactions from "./Screens/User/UserTransactions";
+import AdminTransactions from "./Screens/Admin/AdminTransactions";
 
 
 const Auth = ({ children, isAuth = true, isAdmin = false }) => {
@@ -190,6 +192,14 @@ function App() {
             }
           />
           <Route
+            path="/user/transactions"
+            element={
+              <Auth>
+                <UserTransactions />
+              </Auth>
+            }
+          />
+          <Route
             path="/user/prompts-library"
             element={
               <Auth>
@@ -284,6 +294,14 @@ function App() {
             element={
               <Auth isAdmin={true}>
                 <AdminPackages />
+              </Auth>
+            }
+          />
+          <Route
+            path="/admin/get-transactions"
+            element={
+              <Auth isAdmin={true}>
+                <AdminTransactions/>
               </Auth>
             }
           />
