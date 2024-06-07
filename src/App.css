@@ -376,17 +376,23 @@
 .table td:nth-child(2) {
   width: 15%;
 }
-
 .table th:nth-child(3),
 .table td:nth-child(3) {
   width: 60%;
   text-align: center;
-}
-
-.table th:nth-child(4),
-.table td:nth-child(4) {
-  width: 15%;
-}
+  }
+  .table th:nth-child(4),
+  .table td:nth-child(4) {
+    width: 15%;
+  }
+  .table th.package-type-column,
+  .table td.package-type-column {
+    width: 25%;
+  }
+  .table th.user-column,
+  .table td.user-column {
+    width: 20%;
+  }
 
 
 

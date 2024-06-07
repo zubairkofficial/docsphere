@@ -73,7 +73,7 @@ const AdminTransactions = () => {
             <div className="nk-block-head nk-page-head">
               <div className="nk-block-head-between">
                 <div className="nk-block-head-content">
-                  <h2 className="display-6">Admin Transactions</h2>
+                  <h2 className="display-6">Transactions</h2>
                   <p>View all transactions</p>
                 </div>
               </div>
@@ -85,12 +85,12 @@ const AdminTransactions = () => {
                     <table className="table">
                       <thead>
                         <tr>
-                          <th style={{ width: '5%' }}>Sr. #</th>
-                          <th style={{ width: '15%' }}>Org Name</th>
-                          <th style={{ width: '20%' }}>Package Type</th>
-                          <th style={{ width: '25%' }}>Purchase</th>
-                          <th style={{ width: '25%' }}>Expiry</th>
-                          <th style={{ width: '10%' }}></th>
+                          <th>Sr. #</th>
+                          <th>Name</th>
+                          <th className="package-type-column">Package Type</th>
+                          <th>Purchase</th>
+                          <th>Expiry</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -98,7 +98,7 @@ const AdminTransactions = () => {
                           <tr key={transaction.id}>
                             <td>{index + 1}</td>
                             <td>{transaction.org_name}</td>
-                            <td>{transaction.package_type}</td>
+                            <td className="package-type-column">{transaction.package_type}</td>
                             <td>{transaction.purchase_date}</td>
                             <td>{transaction.expiry_date}</td>
                             <td className="tb-col-end">
@@ -118,7 +118,7 @@ const AdminTransactions = () => {
                                 >
                                   <em className="icon ni ni-cross"></em>
                                   <span className="ml5">
-                                    {isUnsubscribing ? "Unsubscribing..." : "Unsubscribe"}
+                                    {isUnsubscribing ? "Revoking..." : "Revoke"}
                                   </span>
                                 </button>
                               )}

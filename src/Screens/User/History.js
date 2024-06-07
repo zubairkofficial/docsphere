@@ -52,7 +52,6 @@ const ChatHistory = () => {
                         <div class="nk-timeline-content">
                           <Link to={{pathname : `/user/chat/${chat.chatid}`,
                           }}  state = {{ isHistory : true  }} 
-
                                >
 
                             <div class="card">

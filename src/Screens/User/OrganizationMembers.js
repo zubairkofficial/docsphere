@@ -16,7 +16,8 @@ const OrganizationMembers = () => {
     password_confirmation: "",
     is_org_owner: false,
     is_active: true, // Default is_active to true
-    org_id: Helpers.authUser.org_id // Ensure org_id is correctly set
+    org_id: Helpers.authUser.org_id, // Ensure org_id is correctly set
+    permissions: 1 // Default permissions to read
   };
   const [members, setMembers] = useState([]);
   const [orgData, setOrgData] = useState([]);
@@ -28,14 +29,32 @@ const OrganizationMembers = () => {
   const [selectedMember, setSelectedMember] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [isMemberLimitReached, setIsMemberLimitReached] = useState(false); // State for member limit
 
   useEffect(() => {
     if (!Helpers.authUser.org_id || !Helpers.authUser.is_org_owner) {
       navigate("/"); // Redirect if the user is not part of an organization or is not an org owner
     } else {
+      checkPackageUsers();
       allMembers();
     }
   }, []);
+
+  const checkPackageUsers = () => {
+    axios
+      .get(`${Helpers.apiUrl}organization/check-package-users`, Helpers.authHeaders)
+      .then((response) => {
+        if (response.data.user_count >= response.data.package_users) {
+          setIsMemberLimitReached(true);
+        } else {
+          setIsMemberLimitReached(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsMemberLimitReached(true); // Default to true if there's an error
+      });
+  };
 
   const saveMember = () => {
     if (memberData.password && memberData.password !== memberData.password_confirmation) {
@@ -50,6 +69,7 @@ const OrganizationMembers = () => {
           setIsEditing(false);
         }
         allMembers();
+        checkPackageUsers();
         Helpers.toast("success", response.data.message);
         setShowAddMember(false);
         setIsLoading(false);
@@ -57,7 +77,7 @@ const OrganizationMembers = () => {
       })
       .catch((error) => {
         console.log(error);
-        Helpers.toast("error", error.response.data.message);
+        // Helpers.toast("error", error.response.data.message);
         setErrors(error.response.data.errors || {});
         setIsLoading(false);
       });
@@ -81,7 +101,8 @@ const OrganizationMembers = () => {
       is_active: member.is_active,
       id: member.id,
       password: "",
-      password_confirmation: ""
+      password_confirmation: "",
+      permissions: member.permissions // Add permissions field
     };
     setMemberData(editMember);
     setShowAddMember(true);
@@ -109,6 +130,7 @@ const OrganizationMembers = () => {
       .then((response) => {
         console.log(response);
         allMembers();
+        checkPackageUsers();
         setSelectedMember(0);
         Helpers.toast("success", response.data.message);
         setIsDeleting(false);
@@ -135,6 +157,7 @@ const OrganizationMembers = () => {
                   <button
                     className="btn btn-primary"
                     onClick={() => setShowAddMember(true)}
+                    disabled={isMemberLimitReached} // Disable button if member limit is reached
                   >
                     <em className="icon ni ni-plus"></em> Add New Member
                   </button>
@@ -161,13 +184,14 @@ const OrganizationMembers = () => {
                             <th>Email</th>
                             <th>Role</th>
                             <th>Status</th> {/* Add Status Column */}
+                            <th>Permissions</th> {/* Add Permissions Column */}
                             <th></th>
                           </tr>
                         </thead>
                         <tbody>
                           {members.length === 0 && (
                             <tr>
-                              <td colSpan={6}>No records found...</td>
+                              <td colSpan={7}>No records found...</td>
                             </tr>
                           )}
                           {members.length > 0 &&
@@ -179,6 +203,7 @@ const OrganizationMembers = () => {
                                   <td>{member.email}</td>
                                   <td>{member.is_org_owner ? "Owner" : "Member"}</td>
                                   <td>{member.is_active ? "Active" : "Disabled"}</td> {/* Display Status */}
+                                  <td>{member.permissions === 1 ? "Read" : member.permissions === 0 ? "N/A" : member.permissions === 2 ? "Read / Write" : "N/A"}</td> {/* Display Permissions */}
                                   <td className="tb-col-end">
                                     {selectedMember === member.id ? (
                                       <div>
@@ -302,6 +327,18 @@ const OrganizationMembers = () => {
                           <option value="1">Owner</option>
                         </select>
                         {errors.is_org_owner && <div className="invalid-feedback">{errors.is_org_owner}</div>}
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Permissions</label>
+                        <select
+                          className={`form-control ${errors.permissions ? 'is-invalid' : ''}`}
+                          value={memberData.permissions}
+                          onChange={(e) => setMemberData({ ...memberData, permissions: parseInt(e.target.value) })}
+                        >
+                          <option value="1">Read</option>
+                          <option value="2">Read/Write</option>
+                        </select>
+                        {errors.permissions && <div className="invalid-feedback">{errors.permissions}</div>}
                       </div>
                       <div className="col-md-6">
                         <label className="form-label">Status</label>

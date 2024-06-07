@@ -74,10 +74,10 @@ const AdminUsers = () => {
                     <div className="col-md-12">
                       <table className="table">
                         <thead>
-                          <tr>
-                            <th>Sr. #</th>
-                            <th>Name</th>bg-primary
-                            <th>Email</th>
+                          <tr className="">
+                            <th >Sr. #</th>
+                            <th className="user-column ">Name</th>
+                            <th className="user-column ">Email</th>
                             <th>Joined On</th>
                             <th></th>
                           </tr>
@@ -90,11 +90,11 @@ const AdminUsers = () => {
                           )}
                           {users.map((user, index) => {
                             return (
-                              <tr>
+                              <tr className="">
                                 <td>{index + 1}</td>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
-                                <td>
+                                <td className="user-column">{user.name}</td>
+                                <td className="user-column">{user.email}</td>
+                                <td >
                                   <Moment
                                     date={user.created_at}
                                     format="MMM Do YYYY"

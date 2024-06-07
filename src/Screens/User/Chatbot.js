@@ -120,18 +120,25 @@ const Chatbot = () => {
           ) {
             // getFirstResponse();
             Helpers.toast("success", "File Uploaded Successfully, Now Write something to query");
-            
-
-
           } else {
             setMessages(response.data.messages);
             setTimeout(() => {
               scrollToBottom();
             }, 500);
           }
+        })
+        .catch((error) => {
+          setPageLoading(false);
+          if (error.response && error.response.data && error.response.data.message) {
+            Helpers.toast("error", error.response.data.message);
+            navigate('/user/dashboard')
+          } else {
+            Helpers.toast("error", "An error occurred while fetching the chat.");
+          }
         });
     }
   };
+  
 
   const getFirstResponse = () => {
     setIsLoading(true);
