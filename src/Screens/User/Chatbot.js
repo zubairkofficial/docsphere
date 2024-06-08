@@ -40,7 +40,7 @@ const Chatbot = () => {
   const [isFirstResponse,setIsFirstResponse] = useState(true)
 
   const isHistory = location.state ? location.state.isHistory : null;
-  console.log("Is History value ",isHistory)
+  // console.log("Is History value ",isHistory)
   const scrollToBottom = () => {
     window.scrollTo(0, document.body.scrollHeight);
   };
@@ -217,137 +217,127 @@ const Chatbot = () => {
   };
 
   
-const getResponse = async (btnPrompt = "") => {
+  const getResponse = async (btnPrompt = "") => {
     if (btnPrompt || userInput) {
-      setIsLoading(true);
-      let msg = {
-        message: btnPrompt ? btnPrompt : userInput,
-        user_id: Helpers.authUser.id,
-        chat_id: chat.id,
-        is_bot: 0,
-      };
-      let finalPrompt = '';
+        setIsLoading(true);
+        let msg = {
+            message: btnPrompt ? btnPrompt : userInput,
+            user_id: Helpers.authUser.id,
+            chat_id: chat.id,
+            is_bot: 0,
+        };
+        let finalPrompt = '';
 
-      // Create a custom logging function
-      const logPrompt = (prompt) => {
-          finalPrompt = prompt;
-          // console.log('Current Prompt:', finalPrompt);
-          return prompt; // Return the prompt unchanged
-      };
-      
-      const llm = new ChatOpenAI({ openAIApiKey });
-      const standAloneTemplate = `Given a question, convert the question to a standalone question. 
-      Question: {question}
-      standalone question:`;
-      const standAlonePrompt = PromptTemplate.fromTemplate(standAloneTemplate);
-      
-      const answerTemplate = `You are a helpful and enthusiastic support bot who can answer a given question based on the context provided. Try to find the answer in the context. If you really don't know the answer, say "I'm sorry, I don't know the answer to that." And direct the questioner to email help@docsphere.com. Don't try to make up an answer. Always speak as if you were chatting to a friend.
-      context: {context}
-      question: {question}
-      answer:`;
-      
-      const answerPrompt = PromptTemplate.fromTemplate(answerTemplate);
-      
-      const standAloneQuestionChain = standAlonePrompt.pipe(logPrompt).pipe(llm).pipe(new StringOutputParser());
-      
-      const retrieverChain = RunnableSequence.from([
-        prevResult => prevResult.standalone_question,
-        retriever,
-        combineDocs,
-      ]);
-      
-      const answerChain = answerPrompt.pipe(logPrompt).pipe(llm).pipe(new StringOutputParser()); // Log the answer prompt
-      const chain = RunnableSequence.from([
-        {
-          standalone_question: standAloneQuestionChain,
-          original_input: new RunnablePassthrough(),
-        },
-        {
-          context: retrieverChain,
-          question: ({ original_input }) => original_input.question,
-        },
-        answerChain,
-      ]);
-      
-      const botresponse = await chain.invoke({ 
-        question: userInput,
-      });
-      
-      const lastprompt = finalPrompt.value;
+        // Create a custom logging function
+        const logPrompt = (prompt) => {
+            finalPrompt = prompt;
+            // console.log('Current Prompt:', finalPrompt);
+            return prompt; // Return the prompt unchanged
+        };
 
-      // console.log("Final Prompt:", finalPrompt.value); // Log the final prompt
-      // console.log("Response:", botresponse);
-      
-      let msgs = messages;
-      msgs.push(msg);
-      setMessages(msgs);
-      setTimeout(() => {
-        scrollToBottom();
-      }, 500);
-      const data = new FormData();
-      data.append("chatid", chatid);
-      data.append("file", file);
-      data.append("input", btnPrompt ? btnPrompt : userInput);
-      data.append("lastprompt", lastprompt);
-      addMessage();
-      setUserInput("");
-      const controller = new AbortController();
-      const signal = controller.signal;
-      fetch(`${Helpers.apiUrl}bot/response`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: data,
-        // body: JSON.stringify(data),
-        signal,
-      })
-        .then((response) => {
-          setFile("");
-          if (!response.ok) {
-            response.json().then((error) => {
-              Helpers.toast("error", error.message);
-              setIsLoading(false);
-            });
-          } else {
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
+        const llm = new ChatOpenAI({ openAIApiKey });
+        const standAloneTemplate = `Given a question, convert the question to a standalone question. 
+        Question: {question}
+        standalone question:`;
+        const standAlonePrompt = PromptTemplate.fromTemplate(standAloneTemplate);
 
-            function processText({ done, value }) {
-              if (done) {
-                setIsLoading(false);
-                return;
-              }
-              let text = decoder.decode(value);
-              // let text = botresponse;
-              if (text.endsWith("[DONE]")) {
-                text = text.slice(0, -6);
-              }
-              let withLines = text.replace(/\\n/g, "\n");
-              // let withLines = text;
-              setMessages((prevMessages) => {
-                const updatedMessages = [...prevMessages];
-                updatedMessages[messages.length - 1].message += withLines;
-                return updatedMessages;
-              });
-              setTimeout(() => {
-                scrollToBottom();
-              }, 500);
-              reader.read().then(processText);
-            }
-            reader.read().then(processText);
+        const answerTemplate = `You are a helpful and enthusiastic support bot who can answer a given question based on the context provided. Try to find the answer in the context. If you really don't know the answer, say "I'm sorry, I don't know the answer to that." And direct the questioner to email help@docsphere.com. Don't try to make up an answer. Always speak as if you were chatting to a friend.
+        context: {context}
+        question: {question}
+        answer:`;
 
-          }
-          setIsFirstResponse(false)
+        const answerPrompt = PromptTemplate.fromTemplate(answerTemplate);
+
+        const standAloneQuestionChain = standAlonePrompt.pipe(logPrompt).pipe(llm).pipe(new StringOutputParser());
+
+        const retrieverChain = RunnableSequence.from([
+            prevResult => prevResult.standalone_question,
+            retriever,
+            combineDocs,
+        ]);
+
+        const answerChain = answerPrompt.pipe(logPrompt).pipe(llm).pipe(new StringOutputParser()); // Log the answer prompt
+
+        // Simulate the first part of the chain to get the final prompt without invoking the entire chain
+        const simulateChain = async () => {
+            const standaloneQuestionResult = await standAloneQuestionChain.invoke({ question: userInput });
+            const contextResult = await retrieverChain.invoke({ standalone_question: standaloneQuestionResult });
+            const finalPromptData = await answerPrompt.format({ context: contextResult, question: userInput });
+            return finalPromptData;
+        };
+
+        // Get the final prompt without invoking the entire chain
+        const finalPromptData = await simulateChain();
+
+        console.log("Final Prompt:", finalPromptData); // Log the final prompt
+
+        let msgs = messages;
+        msgs.push(msg);
+        setMessages(msgs);
+        setTimeout(() => {
+            scrollToBottom();
+        }, 500);
+        const data = new FormData();
+        data.append("chatid", chatid);
+        data.append("file", file);
+        data.append("input", btnPrompt ? btnPrompt : userInput);
+        data.append("lastprompt", finalPromptData);
+        addMessage();
+        setUserInput("");
+        const controller = new AbortController();
+        const signal = controller.signal;
+        fetch(`${Helpers.apiUrl}bot/response`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: data,
+            signal,
         })
-        .catch((error) => {
-          console.log("ERROR::", error);
-          setIsLoading(false);
-        });
+            .then((response) => {
+                setFile("");
+                if (!response.ok) {
+                    response.json().then((error) => {
+                        Helpers.toast("error", error.message);
+                        setIsLoading(false);
+                    });
+                } else {
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+
+                    function processText({ done, value }) {
+                        if (done) {
+                            setIsLoading(false);
+                            return;
+                        }
+                        let text = decoder.decode(value);
+                        if (text.endsWith("[DONE]")) {
+                            text = text.slice(0, -6);
+                        }
+                        let withLines = text.replace(/\\n/g, "\n");
+                        setMessages((prevMessages) => {
+                            const updatedMessages = [...prevMessages];
+                            updatedMessages[messages.length - 1].message += withLines;
+                            return updatedMessages;
+                        });
+                        setTimeout(() => {
+                            scrollToBottom();
+                        }, 500);
+                        reader.read().then(processText);
+                    }
+                    reader.read().then(processText);
+                }
+                setIsFirstResponse(false);
+            })
+            .catch((error) => {
+                console.log("ERROR::", error);
+                setIsLoading(false);
+            });
     } else {
-      Helpers.toast("error", "Can't send without input");
+        Helpers.toast("error", "Can't send without input");
     }
 };
+
 
   const addMessage = () => {
     let msg = {
