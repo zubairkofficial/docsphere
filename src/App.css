@@ -431,3 +431,18 @@
     margin-left: 30px;
   }
 }
+.pricing {
+  margin: 10px;
+}
+
+.pricing.selected {
+  border: 2px solid #007bff; /* Change to your preferred active border color */
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+.btn-primary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+}
