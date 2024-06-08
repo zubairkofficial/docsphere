@@ -112,6 +112,7 @@ const Chatbot = () => {
       axios
         .get(`${Helpers.apiUrl}chat/get/${chatid}`, Helpers.authHeaders)
         .then((response) => {
+          console.log(response)
           setChat(response.data);
           setPageLoading(false);
           if (
@@ -338,6 +339,7 @@ const Chatbot = () => {
     }
 };
 
+ 
 
   const addMessage = () => {
     let msg = {
@@ -412,7 +414,7 @@ const Chatbot = () => {
                                   )}
                                   <span className="chat-user">
                                     <strong>
-                                      {msg.is_bot == 1 ? "DocSphere.AI" : "You"}
+                                      {msg.is_bot == 1 ? "DocSphere.AI" : msg.user_name}
                                     </strong>
                                   </span>
                                 </div>

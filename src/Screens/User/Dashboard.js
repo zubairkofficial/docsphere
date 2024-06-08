@@ -11,6 +11,7 @@ const UserDashboard = () => {
 
     useEffect(() => {
     if (Helpers.authUser.org_id) {
+      console.log(Helpers.authUser)
       fetchOrganizationName(Helpers.authUser.org_id);
     }
     console.log(Helpers.authUser);

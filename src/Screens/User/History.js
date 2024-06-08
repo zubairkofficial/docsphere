@@ -17,6 +17,7 @@ const ChatHistory = () => {
     axios
       .get(`${Helpers.apiUrl}chat/all`, Helpers.authHeaders)
       .then((response) => {
+        console.log(response.data)
         setChats(response.data);
         setPageLoading(false);
       });
@@ -77,8 +78,8 @@ const ChatHistory = () => {
                                 >
                                   <APIResponse
                                     response={
-                                      chat.chat_message ||
-                                      "No message Available"
+                                      `Chat Created By: ${chat.user.name}` ||
+                                      "User Data Not Found"
                                     }
                                     onlyFirstPara={true}
                                   />
